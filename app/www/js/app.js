@@ -12,4 +12,9 @@ var app = {
 	}
 }
 
+/* Stop app rotating outside of right way up portrait. */
+function shouldRotateToOrientation(degrees) {
+	return (degrees === 0);
+};
+
 app.initialize();
