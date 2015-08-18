@@ -21,8 +21,15 @@
 	<preference name="SplashScreenDelay" value="5000"/>
     <platform name="android">
         <allow-intent href="market:*" />
-		<!-- TODO Splash screens -->
 		<!-- TODO Icons -->
+        <splash src="resources/splash/android/splash-land-hdpi.png" density="land-hdpi"/>
+        <splash src="resources/splash/android/splash-land-ldpi.png" density="land-ldpi"/>
+        <splash src="resources/splash/android/splash-land-mdpi.png" density="land-mdpi"/>
+        <splash src="resources/splash/android/splash-land-xhdpi.png" density="land-xhdpi"/>
+        <splash src="resources/splash/android/splash-port-hdpi.png" density="port-hdpi"/>
+        <splash src="resources/splash/android/splash-port-ldpi.png" density="port-ldpi"/>
+        <splash src="resources/splash/android/splash-port-mdpi.png" density="port-mdpi"/>
+        <splash src="resources/splash/android/splash-port-xhdpi.png" density="port-xhdpi"/>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
