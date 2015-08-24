@@ -1,1 +1,6 @@
-/* TODO */
+/* For fixed top and bottom navigation bars */
+
+body { 
+	padding-top: 70px; 
+	padding-bottom: 70px;
+}

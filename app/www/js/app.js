@@ -26,15 +26,20 @@ var app = {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
-
+				alert('failed to load stations');
+				console.log(status);
+				console.log(errorMsg);
 			},
 			method: 'GET',
 			success: function(data, status) {
+				var tplSource = $('#stationListTemplate').html();
+				var htmlTemplate = Handlebars.compile(tplSource);
 
+				$('#app').html(htmlTemplate({ stations: data }));
 			},
 			url: app.API_BASE_URL + 'stations',
 		});
-	}
+	},
 
 	onGeolocationSuccess: function(position) {
 		console.log(position);

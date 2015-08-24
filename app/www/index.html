@@ -5,26 +5,39 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="author" content="Simon Prickett">
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *">
+		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src http://bart.crudworks.org">
 		<title>BART Cordova</title>
 		<!-- Bootstrap and Custom app CSS overrides -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/custom.css" rel="stylesheet">
+
+		<!-- Handlebars Templates -->
+		<script id="stationListTemplate" type="text/x-handlebars-template">
+			<div class="panel panel-default">
+				<ul class="list-group">
+					{{#each stations}}
+						<li id="{{abbr}}" class="list-group-item">{{name}}</li>
+					{{/each}}
+				</ul>
+			</div>
+		</script>
 	</head>
 	<body>
+		<!-- TODO header? -->
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+    			<div class="navbar-header">
+    				BART
+    			</div>
+		    </div>
+		</nav>
 		<div class="container" id="app">
-			<div class="row">
-				<div class="col-lg-12 text-center">
-					<hr/>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12 text-center">
-					<h1>Hello Cordova!</h1>
-					<p class="lead">Initial start point for Cordova Bootstrap / JQuery App</p>
-				</div>
-			</div>
 		</div>
+		<nav class="navbar navbar-inverse navbar-fixed-bottom">
+			<div class="container">
+				Cordova 5 Demo
+		    </div>
+		</nav>
 
 		<!-- Cordova JS -->
 		<script type="text/javascript" src="cordova.js"></script>
@@ -32,6 +45,9 @@
 		<!-- JQuery and Bootstrap JS -->
 		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+		<!-- Handlebars JS -->
+		<script type="text/javascript" src="js/handlebars.min.js"></script>
 
 		<!-- Application JS -->
 		<script type="text/javascript" src="js/app.js"></script>
