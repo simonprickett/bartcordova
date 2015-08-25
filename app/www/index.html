@@ -23,7 +23,12 @@
 		</script>
 
 		<script id="closestStationTemplate" type="text/x-handlebars-template">
-			<p>{{station.abbr}} {{station.name}}</p>
+			<div class="alert alert-info alert-dismissable" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>Closest:</strong> {{station.name}} ({{round station.distance}} miles)
+			</div>
 		</script>
 	</head>
 	<body>

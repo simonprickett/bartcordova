@@ -3,6 +3,11 @@ var app = {
 
 	initialize: function() {
 		document.addEventListener('deviceready', this.onDeviceReady, false);
+
+		Handlebars.registerHelper("round", function(numToRound) {
+			numToRound = parseFloat(numToRound);
+			return (Math.round(numToRound * 10) / 10);
+		});
 	},
 
 	onDeviceReady: function() {
