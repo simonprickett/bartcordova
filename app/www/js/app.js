@@ -18,8 +18,16 @@ var app = {
 		}
 
 		navigator.splashscreen.hide();
+		
+		app.showStationListPage();
+
+	},
+
+	showStationListPage: function() {
+		$('#app').html('<div id="closestStation"></div><div id="stationList">');
+
 		app.loadStationList();
-		//navigator.geolocation.getCurrentPosition(app.onGeolocationSuccess, app.onGeolocationError);
+		navigator.geolocation.getCurrentPosition(app.onGeolocationSuccess, app.onGeolocationError);		
 	},
 
 	loadStationList: function() {
@@ -35,13 +43,29 @@ var app = {
 				var tplSource = $('#stationListTemplate').html();
 				var htmlTemplate = Handlebars.compile(tplSource);
 
-				$('#app').html(htmlTemplate({ stations: data }));
+				$('#stationList').html(htmlTemplate({ stations: data }));
 			},
 			url: app.API_BASE_URL + 'stations',
 		});
 	},
 
 	onGeolocationSuccess: function(position) {
+		$.ajax({
+			cache: false,
+			error: function(xhr, status, errorMsg) {
+				alert('failed to get closest station');
+				console.log(status);
+				console.log(errorMsg);
+			},
+			method: 'GET',
+			success: function(data, status) {
+				var tplSource = $('#closestStationTemplate').html();
+				var htmlTemplate = Handlebars.compile(tplSource);
+
+				$('#closestStation').html(htmlTemplate({ station: data}));
+			},
+			url: app.API_BASE_URL + 'station/' + position.coords.latitude + '/' + position.coords.longitude
+		})
 		console.log(position);
 	},
 
