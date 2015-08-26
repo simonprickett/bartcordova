@@ -67,28 +67,36 @@
   			</div>
 			<h4>{{stationName}}</h4>
 			<ul class="nav nav-tabs stationTabs">
-  				<li role="presentation" class="active"><a href="#">Departures</a></li>
-  				<li role="presentation"><a href="#">Info</a></li>
-  				<li role="presentation"><a href="#">Tickets</a></li>
+  				<li class="active"><a href="#departures" data-toggle="tab">Departures</a></li>
+  				<li ><a href="#info" data-toggle="tab">Info</a></li>
+  				<li ><a href="#tickets" data-toggle="tab">Tickets</a></li>
 			</ul>
 		</script>
 
 		<script id="stationDeparturesTemplate" type="text/x-handlebars-template">
 			<div class="tab-content">
-				{{#each destinations}}
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">{{destination}}</h3>
+				<div id="departures" class="tab-pane fade in active">
+					{{#each destinations}}
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<h3 class="panel-title">{{destination}} (Platform {{estimate.[1].platform}})</h3>
+							</div>
+							<div class="panel-body">
+								<ul class="list-group">
+									{{#each estimate}}
+										<li class="list-group-item">{{minutes}} mins, {{length}} cars</li>
+									{{/each}}
+								</ul>
+							</div>
 						</div>
-						<div class="panel-body">
-							<ul class="list-group">
-								{{#each estimate}}
-									<li class="list-group-item">{{minutes}} mins, {{length}} cars</li>
-								{{/each}}
-							</ul>
-						</div>
-					</div>
-				{{/each}}
+					{{/each}}
+				</div>
+				<div id="info" class="tab-pane fade">
+					<h3>TODO</h3>
+				</div>
+				<div id="tickets" class="tab-pane fade">
+					<h3>TODO</h3>
+				</div>
 			</div>
 		</script>
 	</head>
