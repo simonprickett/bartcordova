@@ -17,3 +17,7 @@ body {
 .stationTabs {
 	margin-bottom: 20px;
 }
+
+.platform {
+	font-size: 0.8em;
+}

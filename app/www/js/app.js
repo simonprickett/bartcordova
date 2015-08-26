@@ -16,6 +16,14 @@ var app = {
 			timeComponents = timeToFormat.split(':');
 			return(timeComponents[0] + ':' + timeComponents[1]);
 		});		
+
+		Handlebars.registerHelper("formatMins", function(minsToFormat) {
+			if (minsToFormat === 'Leaving') {
+				return minsToFormat;
+			} else {
+				return minsToFormat + (minsToFormat === '1' ? ' min' : ' mins');
+			}
+		});
 	},
 
 	onDeviceReady: function() {
@@ -103,6 +111,10 @@ var app = {
 
 				$('#reloadButton').click(function(e) {
 					app.showStationDetailPage(stationId);
+				});
+
+				$('.panel-heading').click(function(e) {
+					app.showStationDetailPage($(this).attr('id'));
 				});
 			},
 			url: app.API_BASE_URL + 'departures/' + stationId
