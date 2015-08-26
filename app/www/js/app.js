@@ -1,4 +1,18 @@
 var app = {
+	// TODO: Get page skeletons out of JS and into HTML
+	// TODO: Info tab
+	// TODO: Tickets tab
+	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
+	// TODO: Font Awesome icons
+	// TODO: Cache station list for a while
+	// TODO: Scroll to top plugin?
+	// TODO: Shake to reload plugin?
+	// TODO: Network error handling
+	// TODO: Loading mask or spinner
+	// TODO: Precompiled Handlebars templates
+	// TODO: Proper splash screen
+	// TODO: Proper icon
+	// TODO: Test Android
 	API_BASE_URL: "http://bart.crudworks.org/api/",
 
 	initialize: function() {
