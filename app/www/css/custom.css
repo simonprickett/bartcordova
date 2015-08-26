@@ -21,3 +21,29 @@ body {
 .platform {
 	font-size: 0.8em;
 }
+
+.lineBLUE {
+	background-color: #0099cc;
+	color: #ffffff;
+}
+
+.lineYELLOW {
+	background-color: #ffff33;
+	color: #000000;
+}
+
+.lineORANGE {
+	background-color: #ff9933;
+	color: #ffffff;
+}
+
+.lineRED {
+	background-color: #ff0000;
+	color: #ffffff;
+}
+
+.lineGREEN {
+	background-color: #339933;
+	color: #ffffff;
+}
+
