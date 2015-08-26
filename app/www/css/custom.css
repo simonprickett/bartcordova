@@ -13,3 +13,7 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100%;
 }
+
+.stationTabs {
+	margin-bottom: 20px;
+}
