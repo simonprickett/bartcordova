@@ -37,7 +37,11 @@ var app = {
 	},
 
 	showStationListPage: function() {
-		$('#app').html('<div id="systemStatus"></div><div id="closestStation"></div><div id="stationList">');
+		var tplSource = $('#stationListHeaderTemplate').html();
+		var htmlTemplate = Handlebars.compile(tplSource);
+
+		$('#app').html('<div id="title"></div><div id="systemStatus"></div><div id="closestStation"></div><div id="stationList">');
+		$('#title').html(htmlTemplate());
 
 		app.loadStationList();
 		app.loadSystemStatus();
@@ -67,6 +71,10 @@ var app = {
 				$('#stations li').click(function(e) {
 					app.showStationDetailPage($(this).attr('id'));
 				});
+
+				$('#reloadButton').click(function(e) {
+					app.showStationListPage();
+				});
 			},
 			url: app.API_BASE_URL + 'stations',
 		});
@@ -91,6 +99,10 @@ var app = {
 
 				$('#backButton').click(function() {
 					app.showStationListPage();
+				});
+
+				$('#reloadButton').click(function(e) {
+					app.showStationDetailPage(stationId);
 				});
 			},
 			url: app.API_BASE_URL + 'departures/' + stationId
@@ -156,6 +168,10 @@ var app = {
 				var htmlTemplate = Handlebars.compile(tplSource);
 
 				$('#closestStation').html(htmlTemplate({ station: data}));
+
+				$('#nearestStationButton').click(function() {
+					app.showStationDetailPage(data.abbr);
+				});
 			},
 			url: app.API_BASE_URL + 'station/' + position.coords.latitude + '/' + position.coords.longitude
 		})

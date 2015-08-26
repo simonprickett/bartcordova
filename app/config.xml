@@ -35,7 +35,10 @@
         <splash src="resources/splash/android/splash-port-xhdpi.png" density="port-xhdpi"/>
     </platform>
     <platform name="ios">
-        <allow-intent href="itms:*" />
+		<preference name="StatusBarOverlaysWebView" value="false" />
+		<preference name="StatusBarStyle" value="lightcontent" />
+		<preference name="StatusBarBackgroundColor" value="#016bd8" />
+		<allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon src="resources/icons/ios/icon-60@3x.png" width="180" height="180" />
         <icon src="resources/icons/ios/icon-60.png" width="60" height="60" />

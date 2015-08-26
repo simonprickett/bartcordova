@@ -12,6 +12,15 @@
 		<link href="css/custom.css" rel="stylesheet">
 
 		<!-- Handlebars Templates -->
+		<script id="stationListHeaderTemplate" type="text/x-handlebars-template">
+			<div class="pull-right">
+				<button type="button" class="btn btn-default btn-sm" id="reloadButton">
+  					<span class="glyphicon glyphicon-retweet"></span>
+  				</button>
+  			</div>
+			<h3>BART Departures</h3>
+		</script>
+
 		<script id="stationListTemplate" type="text/x-handlebars-template">
 			<div class="panel panel-default">
 				<ul class="list-group" id="stations">
@@ -27,12 +36,12 @@
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<strong>Closest</strong> - {{station.name}} ({{round station.distance}} miles)
+				<span id="nearestStationButton"><strong>Closest</strong> - {{station.name}} ({{round station.distance}} miles)</span>
 			</div>
 		</script>
 
 		<script id="serviceAnnouncementTemplate" type="text/x-handlebars-template">
-			<div class="alert alert-info alert-dismissable" role="alert">
+			<div class="alert alert-danger alert-dismissable" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -51,6 +60,11 @@
 
 		<script id="stationHeaderTemplate" type="text/x-handlebars-template">
 			<button type="button" class="btn btn-primary btn-sm" id="backButton"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Back</button>
+			<div class="pull-right">
+				<button type="button" class="btn btn-default btn-sm" id="reloadButton">
+  					<span class="glyphicon glyphicon-retweet"></span>
+  				</button>
+  			</div>
 			<h4>{{stationName}}</h4>
 			<ul class="nav nav-tabs">
   				<li role="presentation" class="active"><a href="#">Departures</a></li>
@@ -75,20 +89,14 @@
 		</script>
 	</head>
 	<body>
-		<nav class="navbar navbar-inverse navbar-fixed-top">
+		<nav class="navbar navbar-fixed-top">
 			<div class="container">
     			<div class="navbar-header">
-    				BART
     			</div>
 		    </div>
 		</nav>
 		<div class="container" id="app">
 		</div>
-		<nav class="navbar navbar-inverse navbar-fixed-bottom">
-			<div class="container">
-				Cordova 5 Demo
-		    </div>
-		</nav>
 
 		<!-- Cordova JS -->
 		<script type="text/javascript" src="cordova.js"></script>

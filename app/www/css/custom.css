@@ -2,5 +2,14 @@
 
 body { 
 	padding-top: 70px; 
-	padding-bottom: 70px;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.navbar-fixed-top {
+	background-image: url("../images/header.png");
+	background-repeat: no-repeat;
+	background-size: 100%;
 }
