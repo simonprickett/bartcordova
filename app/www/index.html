@@ -14,7 +14,7 @@
 		<!-- Handlebars Templates -->
 		<script id="stationListTemplate" type="text/x-handlebars-template">
 			<div class="panel panel-default">
-				<ul class="list-group">
+				<ul class="list-group" id="stations">
 					{{#each stations}}
 						<li id="{{abbr}}" class="list-group-item">{{name}}</li>
 					{{/each}}
@@ -27,12 +27,54 @@
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<strong>Closest:</strong> {{station.name}} ({{round station.distance}} miles)
+				<strong>Closest</strong> - {{station.name}} ({{round station.distance}} miles)
+			</div>
+		</script>
+
+		<script id="serviceAnnouncementTemplate" type="text/x-handlebars-template">
+			<div class="alert alert-info alert-dismissable" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>{{formatTime announcement.time}}</strong> - {{announcement.bsa.description}}
+			</div>
+		</script>
+
+		<script id="trainCountTemplate" type="text/x-handlebars-template">
+			<div class="alert alert-success alert-dismissable" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<strong>{{formatTime systemStatus.time}}</strong> - {{systemStatus.traincount}} trains operating.
+			</div>
+		</script>
+
+		<script id="stationHeaderTemplate" type="text/x-handlebars-template">
+			<button type="button" class="btn btn-primary btn-sm" id="backButton"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Back</button>
+			<h4>{{stationName}}</h4>
+			<ul class="nav nav-tabs">
+  				<li role="presentation" class="active"><a href="#">Departures</a></li>
+  				<li role="presentation"><a href="#">Info</a></li>
+  				<li role="presentation"><a href="#">Tickets</a></li>
+			</ul>
+		</script>
+
+		<script id="stationDeparturesTemplate" type="text/x-handlebars-template">
+			<div class="tab-content">
+				{{#each destinations}}
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">{{destination}}</h3>
+						</div>
+						<div class="panel-body">
+							TODO
+						</div>
+					</div>
+				{{/each}}
 			</div>
 		</script>
 	</head>
 	<body>
-		<!-- TODO header? -->
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
     			<div class="navbar-header">

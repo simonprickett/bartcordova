@@ -2,12 +2,20 @@ var app = {
 	API_BASE_URL: "http://bart.crudworks.org/api/",
 
 	initialize: function() {
+		this.registerTemplateHelpers();
 		document.addEventListener('deviceready', this.onDeviceReady, false);
+	},
 
+	registerTemplateHelpers: function() {
 		Handlebars.registerHelper("round", function(numToRound) {
 			numToRound = parseFloat(numToRound);
-			return (Math.round(numToRound * 10) / 10);
+			return(Math.round(numToRound * 10) / 10);
 		});
+
+		Handlebars.registerHelper("formatTime", function(timeToFormat) {
+			timeComponents = timeToFormat.split(':');
+			return(timeComponents[0] + ':' + timeComponents[1]);
+		});		
 	},
 
 	onDeviceReady: function() {
@@ -29,10 +37,16 @@ var app = {
 	},
 
 	showStationListPage: function() {
-		$('#app').html('<div id="closestStation"></div><div id="stationList">');
+		$('#app').html('<div id="systemStatus"></div><div id="closestStation"></div><div id="stationList">');
 
 		app.loadStationList();
+		app.loadSystemStatus();
 		navigator.geolocation.getCurrentPosition(app.onGeolocationSuccess, app.onGeolocationError);		
+	},
+
+	showStationDetailPage: function(stationId) {
+		$('#app').html('<div id="stationHeader"></div><div id="stationDepartures"></div>');
+		app.loadStationDepartures(stationId);
 	},
 
 	loadStationList: function() {
@@ -49,8 +63,82 @@ var app = {
 				var htmlTemplate = Handlebars.compile(tplSource);
 
 				$('#stationList').html(htmlTemplate({ stations: data }));
+
+				$('#stations li').click(function(e) {
+					app.showStationDetailPage($(this).attr('id'));
+				});
 			},
 			url: app.API_BASE_URL + 'stations',
+		});
+	},
+
+	loadStationDepartures: function(stationId) {
+		$.ajax({
+			cache: false,
+			error: function(xhr, status, errrMsg) {
+				alert('failed to load depatures for ' + stationId);
+			},
+			method: 'GET',
+			success: function(data, status) {
+				var tplSource = $('#stationHeaderTemplate').html();
+				var htmlTemplate = Handlebars.compile(tplSource);
+				$('#stationHeader').html(htmlTemplate({ stationName: data.name }));
+
+				tplSource = $('#stationDeparturesTemplate').html();
+				htmlTemplate = Handlebars.compile(tplSource);
+
+				$('#stationDepartures').html(htmlTemplate({ destinations: data.etd }));
+
+				$('#backButton').click(function() {
+					app.showStationListPage();
+				});
+			},
+			url: app.API_BASE_URL + 'departures/' + stationId
+		});
+	},
+
+	loadSystemStatus: function() {
+		$.ajax({
+			cache: false,
+			error: function(xhr, status, errorMsg) {
+				alert('failed to get system status');
+				console.log(status);
+				console.log(errorMsg);
+			},
+			method: 'GET',
+			success: function(data, status) {
+				var tplSource;
+				var htmlTemplate;
+
+				if (data && data.bsa) {
+					if (data.bsa.description === 'No delays reported.') {
+						app.loadTrainCount();
+					} else {
+						tplSource = $('#serviceAnnouncementTemplate').html();
+						htmlTemplate = Handlebars.compile(tplSource);
+						$('#systemStatus').html(htmlTemplate({ announcement: data }));
+					}
+				}
+			},
+			url: app.API_BASE_URL + 'serviceAnnouncements'
+		});
+	},
+
+	loadTrainCount: function() {
+		$.ajax({
+			cache: false,
+			error: function(xhr, status, errorMsg) {
+				alert('failed to get train count');
+				console.log(status);
+				console.log(errorMsg);
+			},
+			method: 'GET',
+			success: function(data, status) {
+				var tplSource = $('#trainCountTemplate').html();
+				var htmlTemplate = Handlebars.compile(tplSource);
+				$('#systemStatus').html(htmlTemplate({ systemStatus: data }));
+			},
+			url: app.API_BASE_URL + 'status'
 		});
 	},
 
