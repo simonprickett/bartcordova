@@ -7,8 +7,9 @@
 		<meta name="author" content="Simon Prickett">
 		<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src http://bart.crudworks.org">
 		<title>BART Cordova</title>
-		<!-- Bootstrap and Custom app CSS overrides -->
+		<!-- Bootstrap, Font-Awesome and Custom app CSS overrides -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet">
 		<link href="css/custom.css" rel="stylesheet">
 
 		<!-- Handlebars Templates -->
@@ -18,14 +19,14 @@
   					<span class="glyphicon glyphicon-refresh"></span>
   				</button>
   			</div>
-			<h3>BART Departures</h3>
+			<h3><i class="fa fa-subway"></i> BART Departures</h3>
 		</script>
 
 		<script id="stationListTemplate" type="text/x-handlebars-template">
 			<div class="panel panel-default">
 				<ul class="list-group" id="stations">
 					{{#each stations}}
-						<li id="{{abbr}}" class="list-group-item">{{name}}</li>
+						<li id="{{abbr}}" class="list-group-item">{{{formatStationName name}}}</li>
 					{{/each}}
 				</ul>
 			</div>
@@ -36,7 +37,8 @@
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<span id="nearestStationButton"><strong>Closest</strong> - {{station.name}} ({{round station.distance}} miles)</span>
+				<span id="nearestStationButton"><strong><i class="fa fa-location-arrow"></i>
+ Closest</strong> - {{{formatStationName station.name}}} ({{round station.distance}} miles)</span>
 			</div>
 		</script>
 
@@ -45,7 +47,8 @@
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<strong>{{formatTime announcement.time}}</strong> - {{announcement.bsa.description}}
+				<strong><i class="fa fa-exclamation-triangle"></i>&nbsp;<i class="fa fa-clock-o"></i>
+ {{formatTime announcement.time}}</strong> - {{announcement.bsa.description}}
 			</div>
 		</script>
 
@@ -54,7 +57,8 @@
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<strong>{{formatTime systemStatus.time}}</strong> - {{systemStatus.traincount}} trains operating.
+				<strong><i class="fa fa-info-circle"></i>&nbsp;<i class="fa fa-clock-o"></i>
+ {{formatTime systemStatus.time}}</strong> - {{systemStatus.traincount}} trains operating.
 			</div>
 		</script>
 
@@ -65,7 +69,7 @@
   					<span class="glyphicon glyphicon-refresh"></span>
   				</button>
   			</div>
-			<h4>{{stationName}}</h4>
+			<h4>{{{formatStationName stationName}}}</h4>
 			<ul class="nav nav-tabs stationTabs">
   				<li class="active"><a href="#departures" data-toggle="tab">Departures</a></li>
   				<li ><a href="#info" data-toggle="tab">Info</a></li>
@@ -79,12 +83,12 @@
 					{{#each destinations}}
 						<div class="panel panel-info">
 							<div class="panel-heading" id="{{abbreviation}}">
-								<h3 class="panel-title">{{destination}} <span class="platform">(Platform {{estimate.[0].platform}})</span></h3>
+								<h3 class="panel-title">{{{formatStationName destination}}} <span class="platform">(Platform {{estimate.[0].platform}})</span></h3>
 							</div>
 							<div class="panel-body">
 								<ul class="list-group">
 									{{#each estimate}}
-										<li class="list-group-item line{{color}}">{{formatMins minutes}}, {{length}} cars</li>
+										<li class="list-group-item line{{color}}">{{{formatTrainIcon minutes}}} {{formatMins minutes}}, {{length}} cars</li>
 									{{/each}}
 								</ul>
 							</div>
@@ -95,6 +99,7 @@
     							<h3 class="panel-title">No Departures</h3>
   							</div>
   							<div class="panel-body">
+    							<i class="fa fa-exclamation-triangle"></i> 
     							Real time departures are not available for this station right now.
   							</div>
 						</div>

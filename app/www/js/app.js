@@ -38,6 +38,18 @@ var app = {
 				return minsToFormat + (minsToFormat === '1' ? ' min' : ' mins');
 			}
 		});
+
+		Handlebars.registerHelper("formatTrainIcon", function(minsToDeparture) {
+			return '<i class="fa ' + (minsToDeparture === 'Leaving' ? 'fa-times-circle' : 'fa-subway') + '"></i>';
+		});
+
+		Handlebars.registerHelper("formatStationName", function(stationName) {
+			if (stationName.indexOf('Airport') > -1) {
+				stationName = '<i class="fa fa-plane"></i> ' + stationName;
+			}
+
+			return stationName;
+		});
 	},
 
 	onDeviceReady: function() {
