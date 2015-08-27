@@ -40,7 +40,16 @@ var app = {
 		});
 
 		Handlebars.registerHelper("formatTrainIcon", function(minsToDeparture) {
-			return '<i class="fa ' + (minsToDeparture === 'Leaving' ? 'fa-times-circle' : 'fa-subway') + '"></i>';
+			var trainIcon = '<i class="fa ';
+			if (minsToDeparture === 'Leaving') {
+				trainIcon += 'fa-times-circle';
+			} else if (parseInt(minsToDeparture, 10) < 5) {
+				trainIcon += 'fa-clock-o';
+			} else {
+				trainIcon += 'fa-subway';
+			}
+
+			return trainIcon + '"></i>';
 		});
 
 		Handlebars.registerHelper("formatStationName", function(stationName) {
