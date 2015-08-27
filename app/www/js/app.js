@@ -3,7 +3,6 @@ var app = {
 	// TODO: Info tab
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
-	// TODO: Font Awesome icons
 	// TODO: Cache station list for a while
 	// TODO: Scroll to top plugin?
 	// TODO: Shake to reload plugin?
@@ -61,6 +60,13 @@ var app = {
 		});
 	},
 
+	resolveTemplate: function(templateName, templateData) {
+		var tplSource = $('#' + templateName).html();
+		var compiledTemplate = Handlebars.compile(tplSource);
+		
+		return compiledTemplate(templateData);
+	},
+
 	onDeviceReady: function() {
 		document.addEventListener('pause', app.onDevicePause, false);
 		document.addEventListener('resume', app.onDeviceResume, false);
@@ -80,11 +86,8 @@ var app = {
 	},
 
 	showStationListPage: function() {
-		var tplSource = $('#stationListHeaderTemplate').html();
-		var htmlTemplate = Handlebars.compile(tplSource);
-
 		$('#app').html('<div id="title"></div><div id="systemStatus"></div><div id="closestStation"></div><div id="stationList">');
-		$('#title').html(htmlTemplate());
+		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
 
 		app.loadStationList();
 		app.loadSystemStatus();
@@ -106,10 +109,7 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				var tplSource = $('#stationListTemplate').html();
-				var htmlTemplate = Handlebars.compile(tplSource);
-
-				$('#stationList').html(htmlTemplate({ stations: data }));
+				$('#stationList').html(app.resolveTemplate('stationListTemplate', { stations: data }));
 
 				$('#stations li').click(function(e) {
 					app.showStationDetailPage($(this).attr('id'));
@@ -131,14 +131,8 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				var tplSource = $('#stationHeaderTemplate').html();
-				var htmlTemplate = Handlebars.compile(tplSource);
-				$('#stationHeader').html(htmlTemplate({ stationName: data.name }));
-
-				tplSource = $('#stationDeparturesTemplate').html();
-				htmlTemplate = Handlebars.compile(tplSource);
-
-				$('#stationDepartures').html(htmlTemplate({ destinations: data.etd }));
+				$('#stationHeader').html(app.resolveTemplate('stationHeaderTemplate', { stationName: data.name }));
+				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { destinations: data.etd }));
 
 				$('#backButton').click(function() {
 					app.showStationListPage();
@@ -166,16 +160,11 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				var tplSource;
-				var htmlTemplate;
-
 				if (data && data.bsa) {
 					if (data.bsa.description === 'No delays reported.') {
 						app.loadTrainCount();
 					} else {
-						tplSource = $('#serviceAnnouncementTemplate').html();
-						htmlTemplate = Handlebars.compile(tplSource);
-						$('#systemStatus').html(htmlTemplate({ announcement: data }));
+						$('#systemStatus').html(app.resolveTemplate('serviceAnnouncementTemplate', { announcement: data }));
 					}
 				}
 			},
@@ -193,9 +182,7 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				var tplSource = $('#trainCountTemplate').html();
-				var htmlTemplate = Handlebars.compile(tplSource);
-				$('#systemStatus').html(htmlTemplate({ systemStatus: data }));
+				$('#systemStatus').html(app.resolveTemplate('trainCountTemplate', { systemStatus: data }));
 			},
 			url: app.API_BASE_URL + 'status'
 		});
@@ -211,10 +198,7 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				var tplSource = $('#closestStationTemplate').html();
-				var htmlTemplate = Handlebars.compile(tplSource);
-
-				$('#closestStation').html(htmlTemplate({ station: data}));
+				$('#closestStation').html(app.resolveTemplate('closestStationTemplate', { station: data}));
 
 				$('#nearestStationButton').click(function() {
 					app.showStationDetailPage(data.abbr);
