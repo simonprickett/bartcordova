@@ -189,7 +189,7 @@ var app = {
 					lastUpdated: Date.now()
 				};
 			},
-			url: app.API_BASE_URL + 'stationDetails'
+			url: app.API_BASE_URL + 'stationAccess'
 		});
 	},
 
