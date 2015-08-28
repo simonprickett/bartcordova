@@ -4,7 +4,6 @@ var app = {
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
-	// TODO: Scroll to top plugin?
 	// TODO: Shake to reload disable when on tickets or station info
 	// TODO: Network error handling
 	// TODO: Loading mask or spinner
@@ -99,6 +98,10 @@ var app = {
 
 		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
 		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
+
+		window.addEventListener("statusTap", function() {
+		    $('html, body').animate({scrollTop:0}, 'slow'); 
+		});
 
 		app.loadStationList();
 		app.loadSystemStatus();

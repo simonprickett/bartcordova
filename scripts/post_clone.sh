@@ -9,3 +9,4 @@ cordova plugin add cordova-plugin-splashscreen
 cordova plugin add cordova-plugin-device
 cordova plugin add cordova-plugin-network-information
 cordova plugin add cordova-plugin-shake
+cordova plugin add https://github.com/welldone-software/cordova-statusTap
