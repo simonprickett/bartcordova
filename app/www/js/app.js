@@ -84,6 +84,12 @@ var app = {
 			document.addEventListener('searchbutton', app.onSearchButton, false);
 		}
 
+		if (device.platform === 'iOS') {
+			window.addEventListener("statusTap", function() {
+		    	$('html, body').animate({scrollTop:0}, 'slow'); 
+			});
+		}
+
 		navigator.splashscreen.hide();
 		
 		app.showStationListPage();
@@ -98,10 +104,6 @@ var app = {
 
 		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
 		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
-
-		window.addEventListener("statusTap", function() {
-		    $('html, body').animate({scrollTop:0}, 'slow'); 
-		});
 
 		app.loadStationList();
 		app.loadSystemStatus();
