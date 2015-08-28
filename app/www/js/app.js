@@ -1,5 +1,5 @@
 var app = {
-	// TODO: Info tab map
+	// TODO: Info tab map link out on Android to native maps
 	// TODO: Make links in info tab go to in app browser
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
@@ -228,7 +228,7 @@ var app = {
 					app.showStationDetailPage(stationId);
 				});
 
-				$('.panel-heading').click(function(e) {
+				$('.stationDetailLink').click(function(e) {
 					app.showStationDetailPage($(this).attr('id'));
 				});
 			},
