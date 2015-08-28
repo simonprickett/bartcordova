@@ -5,7 +5,7 @@ var app = {
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Scroll to top plugin?
-	// TODO: Shake to reload plugin?
+	// TODO: Shake to reload disable when on tickets or station info
 	// TODO: Network error handling
 	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates
@@ -17,6 +17,8 @@ var app = {
 
 	stationAccess: undefined,
 	stationList: undefined,
+	isShowingStationList: true,
+	currentStation: undefined,
 
 	initialize: function() {
 		this.registerTemplateHelpers();
@@ -87,9 +89,14 @@ var app = {
 		
 		app.showStationListPage();
 		app.loadStationAccess();
+
+		shake.startWatch(app.onShake, 30);
 	},
 
 	showStationListPage: function() {
+		app.isShowingStationList = true;
+		app.currentStation = undefined;
+
 		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
 		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
 
@@ -99,6 +106,9 @@ var app = {
 	},
 
 	showStationDetailPage: function(stationId) {
+		app.isShowingStationList = false;
+		app.currentStation = stationId;
+
 		$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
 		app.loadStationDepartures(stationId);
 	},
@@ -283,6 +293,15 @@ var app = {
 
 	onGeolocationError: function(error) {
 		console.log(error);
+	},
+
+	onShake: function() {
+		console.log('SHAKE DETECTED');
+		if (app.isShowingStationList) {
+			app.showStationListPage();
+		} else {
+			app.showStationDetailPage(app.currentStation);
+		}
 	},
 
 	onDevicePause: function() {
