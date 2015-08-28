@@ -8,7 +8,6 @@ var app = {
 	// TODO: Network error handling
 	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates
-	// TODO: Proper splash screen
 	// TODO: Proper icon
 	// TODO: Test Android
 
