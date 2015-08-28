@@ -13,6 +13,24 @@
 		<link href="css/custom.css" rel="stylesheet">
 
 		<!-- Handlebars Templates -->
+		<script id="stationListPageTemplate" type="text/x-handlebars-template">
+			<div id="title">
+			</div>
+			<div id="systemStatus">
+			</div>
+			<div id="closestStation">
+			</div>
+			<div id="stationList">
+			</div>
+		</script>
+
+		<script id="stationDetailPageTemplate" type="text/x-handlebars-template">
+			<div id="stationHeader">
+			</div>
+			<div id="stationDepartures">
+			</div>
+		</script>
+
 		<script id="stationListHeaderTemplate" type="text/x-handlebars-template">
 			<div class="pull-right">
 				<button type="button" class="btn btn-default btn-sm" id="reloadButton">
@@ -88,7 +106,7 @@
 							<div class="panel-body">
 								<ul class="list-group">
 									{{#each estimate}}
-										<li class="list-group-item line{{color}}">{{{formatTrainIcon minutes}}} {{formatMins minutes}}, {{length}} cars</li>
+										<li class="list-group-item line{{color}}">{{{formatTrainIcon minutes}}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{formatMins minutes}}, {{length}} cars</li>
 									{{/each}}
 								</ul>
 							</div>
@@ -106,10 +124,59 @@
 					{{/each}}
 				</div>
 				<div id="info" class="tab-pane fade">
-					<h3>TODO</h3>
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h3 class="panel-title"><i class="fa fa-map"></i> Location</h3> 
+						</div>
+						<div class="panel-body">
+							{{station.address}}
+							<br/>
+							{{station.city}} {{station.state}}, {{station.zipcode}}
+						</div>
+					</div>
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h3 class="panel-title"><i class="fa fa-bicycle"></i> For Cyclists</h3>
+						</div>
+						<div class="panel-body">
+							<h4>Bike Lockers</h4>
+							{{{stationAccess.lockers}}}
+							{{#if stationAccess.bike_station_text}}
+								<h4>Bike Station</h4>
+								{{{stationAccess.bike_station_text}}}
+							{{/if}}
+						</div>
+					</div>
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h3 class="panel-title"><i class="fa fa-car"></i> Parking</h3>
+						</div>
+						<div class="panel-body">
+							{{#if stationAccess.fill_time}}
+								<strong>Expect parking to be full by {{stationAccess.fill_time}}.</strong>
+								<hr/>
+							{{/if}}
+							{{{stationAccess.parking}}}
+						</div>
+					</div>
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h3 class="panel-title"><i class="fa fa-wheelchair"> Accessibility</i></h3>
+						</div>
+						<div class="panel-body">
+							{{{stationAccess.entering}}}
+						</div>
+					</div>
 				</div>
 				<div id="tickets" class="tab-pane fade">
-					<h3>TODO</h3>
+					<div class="panel panel-danger">
+						<div class="panel-heading">
+							<h3 class="panel-title"><i class="fa fa-ticket"></i> Not Available</h3> 
+						</div>
+						<div class="panel-body">
+							<i class="fa fa-exclamation-triangle"></i> Sorry, this feature is not yet available.
+						</div>
+					</div>
 				</div>
 			</div>
 		</script>

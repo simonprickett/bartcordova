@@ -1,9 +1,9 @@
 var app = {
-	// TODO: Get page skeletons out of JS and into HTML
-	// TODO: Info tab
+	// TODO: Info tab map
+	// TODO: Make links in info tab go to in app browser
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
-	// TODO: Cache station list for a while
+	// TODO: Cache station list for a while and later reload it
 	// TODO: Scroll to top plugin?
 	// TODO: Shake to reload plugin?
 	// TODO: Network error handling
@@ -12,7 +12,11 @@ var app = {
 	// TODO: Proper splash screen
 	// TODO: Proper icon
 	// TODO: Test Android
+
 	API_BASE_URL: "http://bart.crudworks.org/api/",
+
+	stationAccess: undefined,
+	stationList: undefined,
 
 	initialize: function() {
 		this.registerTemplateHelpers();
@@ -82,11 +86,11 @@ var app = {
 		navigator.splashscreen.hide();
 		
 		app.showStationListPage();
-
+		app.loadStationAccess();
 	},
 
 	showStationListPage: function() {
-		$('#app').html('<div id="title"></div><div id="systemStatus"></div><div id="closestStation"></div><div id="stationList">');
+		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
 		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
 
 		app.loadStationList();
@@ -95,32 +99,100 @@ var app = {
 	},
 
 	showStationDetailPage: function(stationId) {
-		$('#app').html('<div id="stationHeader"></div><div id="stationDepartures"></div>');
+		$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
 		app.loadStationDepartures(stationId);
 	},
 
 	loadStationList: function() {
+		var updateUI = function() {
+			$('#stationList').html(app.resolveTemplate('stationListTemplate', { stations: app.stationList.data }));
+
+			$('#stations li').click(function(e) {
+				app.showStationDetailPage($(this).attr('id'));
+			});
+
+			$('#reloadButton').click(function(e) {
+				app.showStationListPage();
+			});
+		};
+
+		// TODO check for expired last load date...
+		if (app.stationList && app.stationList.data) {
+			// Use cache
+			console.log('CACHE HIT');
+			updateUI();
+		} else {
+			console.log('NETWORK REQUEST');
+			$.ajax({
+				cache: false,
+				error: function(xhr, status, errorMsg) {
+					alert('failed to load stations');
+					console.log(status);
+					console.log(errorMsg);
+				},
+				method: 'GET',
+				success: function(data, status) {
+					app.stationList = { 
+						data: data,
+						lastUpdated: Date.now()
+					};
+
+					updateUI();
+				},
+				url: app.API_BASE_URL + 'stations',
+			});
+		}	
+	},
+
+	getStation: function(stationId) {
+		var station = {};
+		var n = 0;
+
+		if (app.stationList && app.stationList.data) {
+			for (n = 0; n < app.stationList.data.length; n++) {
+				if (app.stationList.data[n].abbr === stationId) {
+					station = app.stationList.data[n];
+					break;
+				}
+			}
+		}
+
+		return station;
+	},
+
+	loadStationAccess: function() {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
-				alert('failed to load stations');
+				alert('failed to load station info');
 				console.log(status);
 				console.log(errorMsg);
 			},
 			method: 'GET',
 			success: function(data, status) {
-				$('#stationList').html(app.resolveTemplate('stationListTemplate', { stations: data }));
-
-				$('#stations li').click(function(e) {
-					app.showStationDetailPage($(this).attr('id'));
-				});
-
-				$('#reloadButton').click(function(e) {
-					app.showStationListPage();
-				});
+				app.stationAccess = { 
+					data: data,
+					lastUpdated: Date.now()
+				};
 			},
-			url: app.API_BASE_URL + 'stations',
+			url: app.API_BASE_URL + 'stationDetails'
 		});
+	},
+
+	getStationAccess: function(stationId) {
+		var stationAccess = {};
+		var n = 0;
+
+		if (app.stationAccess && app.stationAccess.data) {
+			for (n = 0; n < app.stationAccess.data.length; n++) {
+				if (app.stationAccess.data[n].abbr === stationId) {
+					stationAccess = app.stationAccess.data[n];
+					break;
+				}
+			}
+		}
+
+		return stationAccess;
 	},
 
 	loadStationDepartures: function(stationId) {
@@ -132,7 +204,7 @@ var app = {
 			method: 'GET',
 			success: function(data, status) {
 				$('#stationHeader').html(app.resolveTemplate('stationHeaderTemplate', { stationName: data.name }));
-				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { destinations: data.etd }));
+				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId) }));
 
 				$('#backButton').click(function() {
 					app.showStationListPage();
