@@ -126,10 +126,14 @@
 				<div id="info" class="tab-pane fade">
 					<div class="panel panel-info">
 						<div class="panel-heading">
-							<h3 class="panel-title"><i class="fa fa-map"></i> Location <a href="maps:ll={{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18"><i class="fa fa-external-link pull-right"></i></a></h3> 
+							<h3 class="panel-title"><i class="fa fa-map"></i> Location {{#if isiOS}}<a href="maps:ll={{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">{{else}}<a href="geo:{{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">{{/if}}<i class="fa fa-external-link pull-right"></i></a></h3> 
 						</div>
 						<div class="panel-body">
-							<a href="maps:ll={{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">
+							{{#if isiOS}}
+								<a href="maps:ll={{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">
+							{{else}}
+								<a href="geo:{{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">
+							{{/if}}
 							<img class="img-responsive" src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCjoixPZLk1UWPeKb9woea0etMiY2ZdKkQ&zoom=18&size=450x450&maptype=roadmap&markers=color:red%7C{{station.gtfs_latitude}},{{station.gtfs_longitude}}" alt="Station Location Map"/>
 							</a>
 							{{station.address}}

@@ -1,5 +1,4 @@
 var app = {
-	// TODO: Info tab map link out on Android to native maps
 	// TODO: Make links in info tab go to in app browser
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
@@ -9,7 +8,7 @@ var app = {
 	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates
 	// TODO: Proper icon
-	// TODO: Test Android
+	// TODO: Android hardware back button
 
 	API_BASE_URL: "http://bart.crudworks.org/api/",
 
@@ -218,7 +217,7 @@ var app = {
 			method: 'GET',
 			success: function(data, status) {
 				$('#stationHeader').html(app.resolveTemplate('stationHeaderTemplate', { stationName: data.name }));
-				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId) }));
+				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
 
 				$('#backButton').click(function() {
 					app.showStationListPage();
