@@ -6,9 +6,7 @@ var app = {
 	// TODO: Shake to reload disable when on tickets or station info
 	// TODO: Network error handling
 	// TODO: Loading mask or spinner
-	// TODO: Precompiled Handlebars templates
-	// TODO: Proper icon
-	// TODO: Android hardware back button
+	// TODO: Precompiled Handlebars templates?
 
 	API_BASE_URL: "http://bart.crudworks.org/api/",
 
@@ -325,6 +323,14 @@ var app = {
 
 	onBackButton: function() {
 		console.log('User pressed back button.');
+
+		if (app.isShowingStationList) {
+			// Go to launcher
+			navigator.app.exitApp();
+		} else {
+			// Back to station list
+			app.showStationListPage();
+		}
 	},
 
 	onMenuButton: function() {
