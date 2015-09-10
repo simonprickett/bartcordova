@@ -1,6 +1,6 @@
 var app = {
 	// TODO: Make links in info tab go to in app browser
-	// TODO: Tickets tab
+	// TODO: Tickets tab - needs API work
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Network error handling
