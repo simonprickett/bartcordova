@@ -3,7 +3,6 @@ var app = {
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
-	// TODO: Shake to reload disable when on tickets or station info
 	// TODO: Network error handling
 	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates?
@@ -92,6 +91,7 @@ var app = {
 		app.loadStationAccess();
 
 		shake.startWatch(app.onShake, 30);
+		$(document).on('shown.bs.tab', 'a[data-toggle="tab"]', app.onTabChange);
 	},
 
 	showStationListPage: function() {
@@ -103,6 +103,7 @@ var app = {
 
 		app.loadStationList();
 		app.loadSystemStatus();
+
 		navigator.geolocation.getCurrentPosition(app.onGeolocationSuccess, app.onGeolocationError);		
 	},
 
@@ -111,6 +112,7 @@ var app = {
 		app.currentStation = stationId;
 
 		$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
+
 		app.loadStationDepartures(stationId);
 	},
 
@@ -296,8 +298,19 @@ var app = {
 		console.log(error);
 	},
 
+	onTabChange: function(e) {
+		var tabName = e.target.getAttribute('href');
+
+		if (tabName === '#departures') {
+			$('#reloadButton').show();
+			shake.startWatch(app.onShake, 30);
+		} else {
+			$('#reloadButton').hide();
+			shake.stopWatch();
+		}
+	},
+
 	onShake: function() {
-		console.log('SHAKE DETECTED');
 		if (app.isShowingStationList) {
 			app.showStationListPage();
 		} else {
