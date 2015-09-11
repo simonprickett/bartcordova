@@ -21,9 +21,7 @@ Requires proper install and setup of:
 Fresh clone workflow:
 
 * ```cordova -version``` (should yield 5.2.0 or better)
-* ```cd scripts```
-* ```./post_clone.sh``` (adds iOS and Android platforms, common plugins)
-* ```cd ../app```
+* ```cd app```
 * ```cordova build ios```
 * ```cordova build android```
 
