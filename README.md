@@ -9,14 +9,15 @@ This uses:
 * Handlebars templating
 * Splash screen images in their own folder
 * Icons in their own folder
-* Script to create platforms and plugins folders on first clone from Github
+* Plugins downloaded using a hook script that runs when a platform is added
 * Platforms and plugins folders not in Github on purpose, trying to keep that so
+* iOS pre build hook script to alter the Info plist to disable Application Transport Security in iOS 9 so that backend data calls can be made without requiring SSL endpoints (unsure right now if this will be allowed for apps submitted to the App Store)
 
 Requires proper install and setup of:
 
-* XCode including command line tools
-* Android SDK
-* Apache Cordova CLI
+* Xcode including command line tools, recommend Xcode 7
+* Android SDK, recommend API level 22 (Android 5.1.1)
+* Apache Cordova CLI (5.2.0 or better)
 
 Fresh clone workflow:
 
