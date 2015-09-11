@@ -23,17 +23,17 @@ var app = {
 	},
 
 	registerTemplateHelpers: function() {
-		Handlebars.registerHelper("round", function(numToRound) {
+		Handlebars.registerHelper('round', function(numToRound) {
 			numToRound = parseFloat(numToRound);
 			return(Math.round(numToRound * 10) / 10);
 		});
 
-		Handlebars.registerHelper("formatTime", function(timeToFormat) {
+		Handlebars.registerHelper('formatTime', function(timeToFormat) {
 			timeComponents = timeToFormat.split(':');
 			return(timeComponents[0] + ':' + timeComponents[1]);
 		});		
 
-		Handlebars.registerHelper("formatMins", function(minsToFormat) {
+		Handlebars.registerHelper('formatMins', function(minsToFormat) {
 			if (minsToFormat === 'Leaving') {
 				return minsToFormat;
 			} else {
@@ -41,7 +41,7 @@ var app = {
 			}
 		});
 
-		Handlebars.registerHelper("formatTrainIcon", function(minsToDeparture) {
+		Handlebars.registerHelper('formatTrainIcon', function(minsToDeparture) {
 			var trainIcon = '<i class="fa ';
 			if (minsToDeparture === 'Leaving') {
 				trainIcon += 'fa-times-circle';
@@ -54,7 +54,7 @@ var app = {
 			return trainIcon + '"></i>';
 		});
 
-		Handlebars.registerHelper("formatStationName", function(stationName) {
+		Handlebars.registerHelper('formatStationName', function(stationName) {
 			if (stationName.indexOf('Airport') > -1) {
 				stationName = '<i class="fa fa-plane"></i> ' + stationName;
 			}
