@@ -22,6 +22,8 @@ Fresh clone workflow:
 
 * ```cordova -version``` (should yield 5.2.0 or better)
 * ```cd app```
+* ```cordova platform add ios```
+* ```cordova platform add android```
 * ```cordova build ios```
 * ```cordova build android```
 
