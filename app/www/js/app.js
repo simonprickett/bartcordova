@@ -4,14 +4,17 @@ var app = {
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Network error handling
+	// TODO: Page transitions
 	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates?
+	// TODO: Use a config object
 
 	API_BASE_URL: "http://bart.crudworks.org/api/",
 
 	stationAccess: undefined,
 	stationList: undefined,
 	isShowingStationList: true,
+	isShakeEnabled: false,
 	currentStation: undefined,
 
 	initialize: function() {
@@ -96,8 +99,7 @@ var app = {
 	showStationListPage: function() {
 		app.isShowingStationList = true;
 		app.currentStation = undefined;
-
-		shake.startWatch(app.onShake, 30);
+		app.enableShakeDetection();
 
 		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
 		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
@@ -115,6 +117,18 @@ var app = {
 		$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
 
 		app.loadStationDepartures(stationId);
+	},
+
+	enableShakeDetection: function() {
+		if (! app.isShakeEnabled) {
+			shake.startWatch(app.onShake, 30);
+			app.isShakeEnabled = true;
+		}
+	},
+
+	disableShakeDetection: function() {
+		shake.stopWatch();
+		app.isShakeEnabled = false;
 	},
 
 	loadStationList: function() {
@@ -304,10 +318,10 @@ var app = {
 
 		if (tabName === '#departures') {
 			$('#reloadButton').show();
-			shake.startWatch(app.onShake, 30);
+			app.enableShakeDetection();
 		} else {
 			$('#reloadButton').hide();
-			shake.stopWatch();
+			app.disableShakeDetection();
 		}
 	},
 
