@@ -90,13 +90,14 @@ var app = {
 		app.showStationListPage();
 		app.loadStationAccess();
 
-		shake.startWatch(app.onShake, 30);
 		$(document).on('shown.bs.tab', 'a[data-toggle="tab"]', app.onTabChange);
 	},
 
 	showStationListPage: function() {
 		app.isShowingStationList = true;
 		app.currentStation = undefined;
+
+		shake.startWatch(app.onShake, 30);
 
 		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
 		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
