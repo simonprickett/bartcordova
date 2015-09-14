@@ -1,6 +1,5 @@
 var app = {
-	// TODO: Make links in info tab go to in app browser
-	// TODO: Tickets tab - needs API work
+	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Network error handling
@@ -115,7 +114,6 @@ var app = {
 		app.currentStation = stationId;
 
 		$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
-
 		app.loadStationDepartures(stationId);
 	},
 
@@ -129,6 +127,21 @@ var app = {
 	disableShakeDetection: function() {
 		shake.stopWatch();
 		app.isShakeEnabled = false;
+	},
+
+    amendLinks : function () {
+        $('#infoExternalContent').find('a').each(
+        	function() {
+        		var href = $(this).attr('href');
+
+        		if (href.indexOf('http') === 0) {
+        			$(this).click(function(e) {
+        				e.preventDefault();
+        				cordova.InAppBrowser.open(''.concat(this.href), '_blank');
+        			});
+        		}
+        	}
+        );      
 	},
 
 	loadStationList: function() {
@@ -316,12 +329,22 @@ var app = {
 	onTabChange: function(e) {
 		var tabName = e.target.getAttribute('href');
 
-		if (tabName === '#departures') {
-			$('#reloadButton').show();
-			app.enableShakeDetection();
-		} else {
-			$('#reloadButton').hide();
-			app.disableShakeDetection();
+		switch(tabName) {
+			case '#departures':
+				$('#reloadButton').show();
+				app.enableShakeDetection();
+				break;
+
+			case '#info':
+				$('#reloadButton').hide();
+				app.disableShakeDetection();
+				app.amendLinks();
+				break;
+
+			case '#tickets':
+				$('#reloadButton').hide();
+				app.disableShakeDetection();
+				break;
 		}
 	},
 

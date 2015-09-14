@@ -141,37 +141,39 @@
 							{{station.city}} {{station.state}}, {{station.zipcode}}
 						</div>
 					</div>
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h3 class="panel-title"><i class="fa fa-bicycle"></i> For Cyclists</h3>
+					<div id="infoExternalContent">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<h3 class="panel-title"><i class="fa fa-bicycle"></i> For Cyclists</h3>
+							</div>
+							<div class="panel-body">
+								<h4>Bike Lockers</h4>
+								{{{stationAccess.lockers}}}
+								{{#if stationAccess.bike_station_text}}
+									<h4>Bike Station</h4>
+									{{{stationAccess.bike_station_text}}}
+								{{/if}}
+							</div>
 						</div>
-						<div class="panel-body">
-							<h4>Bike Lockers</h4>
-							{{{stationAccess.lockers}}}
-							{{#if stationAccess.bike_station_text}}
-								<h4>Bike Station</h4>
-								{{{stationAccess.bike_station_text}}}
-							{{/if}}
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<h3 class="panel-title"><i class="fa fa-car"></i> Parking</h3>
+							</div>
+							<div class="panel-body">
+								{{#if stationAccess.fill_time}}
+									<strong>Expect parking to be full by {{stationAccess.fill_time}}.</strong>
+									<hr/>
+								{{/if}}
+								{{{stationAccess.parking}}}
+							</div>
 						</div>
-					</div>
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h3 class="panel-title"><i class="fa fa-car"></i> Parking</h3>
-						</div>
-						<div class="panel-body">
-							{{#if stationAccess.fill_time}}
-								<strong>Expect parking to be full by {{stationAccess.fill_time}}.</strong>
-								<hr/>
-							{{/if}}
-							{{{stationAccess.parking}}}
-						</div>
-					</div>
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h3 class="panel-title"><i class="fa fa-wheelchair"> Accessibility</i></h3>
-						</div>
-						<div class="panel-body">
-							{{{stationAccess.entering}}}
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<h3 class="panel-title"><i class="fa fa-wheelchair"> Accessibility</i></h3>
+							</div>
+							<div class="panel-body">
+								{{{stationAccess.entering}}}
+							</div>
 						</div>
 					</div>
 				</div>
