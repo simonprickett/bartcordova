@@ -1,4 +1,5 @@
 var app = {
+	// TODO: Suppress iCloud backup
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
@@ -133,11 +134,12 @@ var app = {
         $('#infoExternalContent').find('a').each(
         	function() {
         		var href = $(this).attr('href');
+        		var iabOptions = (device.platform === 'iOS' ? 'location=no,enableViewportScale=yes,transitionstyle=fliphorizontal' : '');
 
         		if (href.indexOf('http') === 0) {
         			$(this).click(function(e) {
         				e.preventDefault();
-        				cordova.InAppBrowser.open(''.concat(this.href), '_blank');
+        				cordova.InAppBrowser.open(''.concat(this.href), '_blank', iabOptions);
         			});
         		}
         	}
