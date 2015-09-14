@@ -250,17 +250,23 @@ var app = {
 			method: 'GET',
 			success: function(data, status) {
 				$('#stationHeader').html(app.resolveTemplate('stationHeaderTemplate', { stationName: data.name }));
-				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
+				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { stations: app.stationList.data, destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
 
 				$('#backButton').click(function() {
 					app.showStationListPage();
 				});
 
-				$('#reloadButton').click(function(e) {
+
+				$('#ticketsButton').click(function(e) {
+					e.preventDefault();
+					app.onTicketsButtonPressed();
+				});
+
+				$('#reloadButton').click(function() {
 					app.showStationDetailPage(stationId);
 				});
 
-				$('.stationDetailLink').click(function(e) {
+				$('.stationDetailLink').click(function() {
 					app.showStationDetailPage($(this).attr('id'));
 				});
 			},
@@ -350,6 +356,14 @@ var app = {
 				app.disableShakeDetection();
 				break;
 		}
+	},
+
+	onTicketsButtonPressed: function() {
+		console.log('pressed tickets button');
+		// Check they selected a valid start station
+		// Check they selected a valid end station
+		// Check that the start and end stations differ
+		// Load and display the trip data
 	},
 
 	onShake: function() {
