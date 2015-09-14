@@ -20,6 +20,7 @@
 	<preference name="Orientation" value="portrait" />
 	<preference name="SplashScreenDelay" value="5000"/>
 	<hook type="after_platform_add" src="../scripts/after_platform_add.sh" />
+    <hook type="before_build" src="../scripts/before_build.sh" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon src="resources/icons/android/ldpi.png" density="ldpi" />

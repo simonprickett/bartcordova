@@ -1,4 +1,6 @@
-"use strict";
+/* global cordova Handlebars $ device shake shouldRotateToOrientation */
+
+'use strict';
 
 var app = {
 	// TODO: Suppress iCloud backup
@@ -11,7 +13,7 @@ var app = {
 	// TODO: Precompiled Handlebars templates?
 	// TODO: Use a config object
 
-	API_BASE_URL: "http://bart.crudworks.org/api/",
+	API_BASE_URL: 'http://bart.crudworks.org/api/',
 
 	stationAccess: undefined,
 	stationList: undefined,
@@ -85,8 +87,8 @@ var app = {
 		}
 
 		if (device.platform === 'iOS') {
-			window.addEventListener("statusTap", function() {
-		    	$('html, body').animate({scrollTop:0}, 'slow'); 
+			window.addEventListener('statusTap', function() {
+				$('html, body').animate({ scrollTop: 0 }, 'slow'); 
 			});
 		}
 
@@ -132,20 +134,20 @@ var app = {
 		app.isShakeEnabled = false;
 	},
 
-    amendLinks : function () {
-        $('#infoExternalContent').find('a').each(
-        	function() {
-        		var href = $(this).attr('href');
-        		var iabOptions = (device.platform === 'iOS' ? 'location=no,enableViewportScale=yes,transitionstyle=fliphorizontal' : '');
+	amendLinks : function () {
+		$('#infoExternalContent').find('a').each(
+			function() {
+				var href = $(this).attr('href');
+				var iabOptions = (device.platform === 'iOS' ? 'location=no,enableViewportScale=yes,transitionstyle=fliphorizontal' : '');
 
-        		if (href.indexOf('http') === 0) {
-        			$(this).click(function(e) {
-        				e.preventDefault();
-        				cordova.InAppBrowser.open(''.concat(this.href), '_blank', iabOptions);
-        			});
-        		}
-        	}
-        );      
+				if (href.indexOf('http') === 0) {
+					$(this).click(function(e) {
+						e.preventDefault();
+						cordova.InAppBrowser.open(''.concat(this.href), '_blank', iabOptions);
+					});
+				}
+			}
+		);      
 	},
 
 	loadStationList: function() {
@@ -184,7 +186,7 @@ var app = {
 
 					updateUI();
 				},
-				url: app.API_BASE_URL + 'stations',
+				url: app.API_BASE_URL + 'stations'
 			});
 		}	
 	},
@@ -243,7 +245,7 @@ var app = {
 	loadStationDepartures: function(stationId) {
 		$.ajax({
 			cache: false,
-			error: function(xhr, status, errrMsg) {
+			error: function(xhr, status, errMsg) {
 				alert('failed to load depatures for ' + stationId);
 			},
 			method: 'GET',
@@ -322,8 +324,7 @@ var app = {
 				});
 			},
 			url: app.API_BASE_URL + 'station/' + position.coords.latitude + '/' + position.coords.longitude
-		})
-		console.log(position);
+		});
 	},
 
 	onGeolocationError: function(error) {
@@ -395,11 +396,11 @@ var app = {
 	onSearchButton: function() {
 		console.log('User pressed search button.');
 	}
-}
+};
 
 /* Stop app rotating outside of right way up portrait. */
 function shouldRotateToOrientation(degrees) {
 	return (degrees === 0);
-};
+}
 
 app.initialize();

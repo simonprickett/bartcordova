@@ -1,0 +1,41 @@
+{
+	"name": "bartcordova",
+	"version": "0.0.1",
+	"eslintConfig": {
+	    "rules": {
+	    	"strict": [
+	    		2,
+	    		"global"
+	    	],
+			"no-unused-vars": [
+				1	
+			],
+			"no-console": [
+				1
+			],
+	        "indent": [
+	            2,
+	            "tab",
+				{
+					"SwitchCase": 1
+				}
+	        ],
+	        "quotes": [
+	            2,
+	            "single"
+	        ],
+	        "linebreak-style": [
+	            2,
+	            "unix"
+	        ],
+	        "semi": [
+	            2,
+	            "always"
+	        ]
+	    },
+	    "env": {
+	        "browser": true
+	    },
+	    "extends": "eslint:recommended"
+	}
+}
