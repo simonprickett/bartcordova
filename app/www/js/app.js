@@ -3,7 +3,6 @@
 'use strict';
 
 var app = {
-	// TODO: Suppress iCloud backup
 	// TODO: Tickets tab
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
