@@ -1,3 +1,5 @@
+"use strict";
+
 var app = {
 	// TODO: Suppress iCloud backup
 	// TODO: Tickets tab
@@ -29,7 +31,7 @@ var app = {
 		});
 
 		Handlebars.registerHelper('formatTime', function(timeToFormat) {
-			timeComponents = timeToFormat.split(':');
+			var timeComponents = timeToFormat.split(':');
 			return(timeComponents[0] + ':' + timeComponents[1]);
 		});		
 
