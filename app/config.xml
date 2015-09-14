@@ -38,6 +38,7 @@
     </platform>
     <platform name="ios">
 		<hook type="before_build" src="../scripts/ios_before_build.sh" />
+        <preference name="BackupWebStorage" value="local"/>
 		<preference name="StatusBarOverlaysWebView" value="false" />
 		<preference name="StatusBarStyle" value="lightcontent" />
 		<preference name="StatusBarBackgroundColor" value="#016bd8" />
