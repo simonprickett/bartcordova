@@ -256,12 +256,6 @@ var app = {
 					app.showStationListPage();
 				});
 
-
-				$('#ticketsButton').click(function(e) {
-					e.preventDefault();
-					app.onTicketsButtonPressed();
-				});
-
 				$('#reloadButton').click(function() {
 					app.showStationDetailPage(stationId);
 				});
@@ -354,6 +348,18 @@ var app = {
 			case '#tickets':
 				$('#reloadButton').hide();
 				app.disableShakeDetection();
+				$('#ticketsButton').click(function(e) {
+					e.preventDefault();
+					app.onTicketsButtonPressed();
+				});
+
+				$('#startingStation > option').each(function() {
+					if (app.currentStation === this.value) {
+						$('#startingStation').val(app.currentStation);
+						// Break from each loop
+						return false;
+					}
+				});
 				break;
 		}
 	},
