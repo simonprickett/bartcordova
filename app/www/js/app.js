@@ -10,15 +10,16 @@ var app = {
 	// TODO: Page transitions
 	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates?
-	// TODO: Use a config object
 
 	API_BASE_URL: 'http://bart.crudworks.org/api/',
 
-	stationAccess: undefined,
-	stationList: undefined,
-	isShowingStationList: true,
-	isShakeEnabled: false,
-	currentStation: undefined,
+	status: {
+		stationAccess: undefined,
+		stationList: undefined,
+		isShowingStationList: true,
+		isShakeEnabled: false,
+		currentStation: undefined
+	},
 
 	initialize: function() {
 		this.registerTemplateHelpers();
@@ -100,8 +101,8 @@ var app = {
 	},
 
 	showStationListPage: function() {
-		app.isShowingStationList = true;
-		app.currentStation = undefined;
+		app.status.isShowingStationList = true;
+		app.status.currentStation = undefined;
 		app.enableShakeDetection();
 
 		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
@@ -114,23 +115,23 @@ var app = {
 	},
 
 	showStationDetailPage: function(stationId) {
-		app.isShowingStationList = false;
-		app.currentStation = stationId;
+		app.status.isShowingStationList = false;
+		app.status.currentStation = stationId;
 
 		$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
 		app.loadStationDepartures(stationId);
 	},
 
 	enableShakeDetection: function() {
-		if (! app.isShakeEnabled) {
+		if (! app.status.isShakeEnabled) {
 			shake.startWatch(app.onShake, 30);
-			app.isShakeEnabled = true;
+			app.status.isShakeEnabled = true;
 		}
 	},
 
 	disableShakeDetection: function() {
 		shake.stopWatch();
-		app.isShakeEnabled = false;
+		app.status.isShakeEnabled = false;
 	},
 
 	amendLinks : function () {
@@ -151,7 +152,7 @@ var app = {
 
 	loadStationList: function() {
 		var updateUI = function() {
-			$('#stationList').html(app.resolveTemplate('stationListTemplate', { stations: app.stationList.data }));
+			$('#stationList').html(app.resolveTemplate('stationListTemplate', { stations: app.status.stationList.data }));
 
 			$('#stations li').click(function(e) {
 				app.showStationDetailPage($(this).attr('id'));
@@ -163,7 +164,7 @@ var app = {
 		};
 
 		// TODO check for expired last load date...
-		if (app.stationList && app.stationList.data) {
+		if (app.status.stationList && app.status.stationList.data) {
 			// Use cache
 			console.log('CACHE HIT');
 			updateUI();
@@ -178,7 +179,7 @@ var app = {
 				},
 				method: 'GET',
 				success: function(data, status) {
-					app.stationList = { 
+					app.status.stationList = { 
 						data: data,
 						lastUpdated: Date.now()
 					};
@@ -194,10 +195,10 @@ var app = {
 		var station = {};
 		var n = 0;
 
-		if (app.stationList && app.stationList.data) {
-			for (n = 0; n < app.stationList.data.length; n++) {
-				if (app.stationList.data[n].abbr === stationId) {
-					station = app.stationList.data[n];
+		if (app.status.stationList && app.status.stationList.data) {
+			for (n = 0; n < app.status.stationList.data.length; n++) {
+				if (app.status.stationList.data[n].abbr === stationId) {
+					station = app.status.stationList.data[n];
 					break;
 				}
 			}
@@ -216,7 +217,7 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				app.stationAccess = { 
+				app.status.stationAccess = { 
 					data: data,
 					lastUpdated: Date.now()
 				};
@@ -229,10 +230,10 @@ var app = {
 		var stationAccess = {};
 		var n = 0;
 
-		if (app.stationAccess && app.stationAccess.data) {
-			for (n = 0; n < app.stationAccess.data.length; n++) {
-				if (app.stationAccess.data[n].abbr === stationId) {
-					stationAccess = app.stationAccess.data[n];
+		if (app.status.stationAccess && app.status.stationAccess.data) {
+			for (n = 0; n < app.status.stationAccess.data.length; n++) {
+				if (app.status.stationAccess.data[n].abbr === stationId) {
+					stationAccess = app.status.stationAccess.data[n];
 					break;
 				}
 			}
@@ -250,7 +251,7 @@ var app = {
 			method: 'GET',
 			success: function(data, status) {
 				$('#stationHeader').html(app.resolveTemplate('stationHeaderTemplate', { stationName: data.name }));
-				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { stations: app.stationList.data, destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
+				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { stations: app.status.stationList.data, destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
 
 				$('#backButton').click(function() {
 					app.showStationListPage();
@@ -354,8 +355,8 @@ var app = {
 				});
 
 				$('#startingStation > option').each(function() {
-					if (app.currentStation === this.value) {
-						$('#startingStation').val(app.currentStation);
+					if (app.status.currentStation === this.value) {
+						$('#startingStation').val(app.status.currentStation);
 						// Break from each loop
 						return false;
 					}
@@ -373,10 +374,10 @@ var app = {
 	},
 
 	onShake: function() {
-		if (app.isShowingStationList) {
+		if (app.status.isShowingStationList) {
 			app.showStationListPage();
 		} else {
-			app.showStationDetailPage(app.currentStation);
+			app.showStationDetailPage(app.status.currentStation);
 		}
 	},
 
@@ -399,7 +400,7 @@ var app = {
 	onBackButton: function() {
 		console.log('User pressed back button.');
 
-		if (app.isShowingStationList) {
+		if (app.status.isShowingStationList) {
 			// Go to launcher
 			navigator.app.exitApp();
 		} else {
