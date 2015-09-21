@@ -349,9 +349,14 @@ var app = {
 			case '#tickets':
 				$('#reloadButton').hide();
 				app.disableShakeDetection();
-				$('#ticketsButton').click(function(e) {
+				$('#ticketsButton:not(.bound)').addClass('bound').click(function(e) {
 					e.preventDefault();
 					app.onTicketsButtonPressed();
+				});
+
+				$('#swapButton:not(.bound)').addClass('bound').click(function(e) {
+					e.preventDefault();
+					app.onSwapButtonPressed();
 				});
 
 				$('#startingStation > option').each(function() {
@@ -361,16 +366,44 @@ var app = {
 						return false;
 					}
 				});
+
+				$('#destinationStation').val('INVALID');
+				
 				break;
 		}
 	},
 
 	onTicketsButtonPressed: function() {
-		console.log('pressed tickets button');
-		// Check they selected a valid start station
-		// Check they selected a valid end station
-		// Check that the start and end stations differ
+		var startStation = $('#startingStation').val();
+		var destinationStation = $('#destinationStation').val();
+
+		if (startStation === 'INVALID') {
+			console.log('Start Station was invalid!');
+			return;
+		}
+
+		if (destinationStation === 'INVALID') {
+			console.log('Destination Station was invalid!');
+			return;
+		}
+
+		if (startStation === destinationStation) {
+			console.log('Start and Destination Stations cannot be the same!');
+			return;
+		}
+
+		console.log('Starting at: ' + $('#startingStation').val());
+		console.log('Heading to: ' + $('#destinationStation').val());
+
 		// Load and display the trip data
+	},
+
+	onSwapButtonPressed: function() {
+		var startStation = $('#startingStation').val();
+		var destinationStation = $('#destinationStation').val();
+
+		$('#startingStation').val(destinationStation);
+		$('#destinationStation').val(startStation);
 	},
 
 	onShake: function() {

@@ -56,3 +56,7 @@ body {
 	background-color: #ffffff;
 	color: #000000;
 }
+
+#swapButton {
+	margin-bottom: 10px;
+}
