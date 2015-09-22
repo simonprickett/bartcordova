@@ -217,7 +217,10 @@
 					<h3 class="panel-title"><i class="fa fa-ticket"></i> Fare Details</h3>
 				</div>
 				<div class="panel-body">
-					<p><strong>Fare:</strong> ${{results.schedule.request.trip.details.fare}}</p>
+					<ul>
+						<li><strong>${{results.schedule.request.trip.details.fare}}</strong> (Adult)</li>
+						<li>${{results.schedule.request.trip.details.clipper}} (Youth, Senior, RTC Clipper)</li>
+					</ul>
 				</div>
 			</div>
 			<div class="panel panel-info">
