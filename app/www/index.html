@@ -225,7 +225,11 @@
 					<h3 class="panel-title"><i class="fa fa-subway"></i> Route Details</h3>
 				</div>
 				<div class="panel-body">
-					<p><strong>TODO.</strong></p>
+					<ul>
+					{{#each results.schedule.request.trip.leg}}
+						<li>{{details.origin}} -> {{details.destination}}</li>
+					{{/each}}
+					</ul>
 				</div>
 			</div>			
 			<div class="panel panel-info">
