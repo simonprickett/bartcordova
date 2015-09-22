@@ -229,11 +229,9 @@
 					<h3 class="panel-title"><i class="fa fa-subway"></i> Route Details</h3>
 				</div>
 				<div class="panel-body">
-					<ul>
 					{{#each results.schedule.request.trip.leg}}
 						<p>At <strong>{{details.origin}}</strong> board a {{details.trainHeadStation}} train alighting at <strong>{{details.destination}}.</strong></p>
 					{{/each}}
-					</ul>
 				</div>
 			</div>			
 			<div class="panel panel-info">

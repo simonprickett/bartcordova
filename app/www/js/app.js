@@ -370,6 +370,9 @@ var app = {
 
 				$('#destinationStation').val('INVALID');
 
+				$('#ticketResults').hide();
+				$('#ticketForm').show();
+
 				break;
 		}
 	},
