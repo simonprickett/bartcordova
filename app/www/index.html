@@ -231,7 +231,7 @@
 				<div class="panel-body">
 					<ul>
 					{{#each results.schedule.request.trip.leg}}
-						<li>{{details.origin}} -> {{details.destination}}</li>
+						<p>At <strong>{{details.origin}}</strong> board a {{details.trainHeadStation}} train alighting at <strong>{{details.destination}}.</strong></p>
 					{{/each}}
 					</ul>
 				</div>

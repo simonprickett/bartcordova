@@ -402,7 +402,6 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				console.log(data);
 				// do something with the data!
 				$('#ticketResults').html(app.resolveTemplate('ticketResultsTemplate', { results: data}));
 				app.amendLinks('#ticketResults');
