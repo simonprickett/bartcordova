@@ -178,32 +178,54 @@
 					</div>
 				</div>
 				<div id="tickets" class="tab-pane fade">
-					<form>
-						<fieldset>
-							<div class="form-group">
-								<label for="startingStation">Starting from:</label>
-	  							<select id="startingStation" class="form-control">
-	    							<option value="INVALID">Select a station...</option>
-									{{#each stations}}
-										<option value="{{abbr}}">{{{formatStationName name}}}</option>
-									{{/each}}
-	  							</select>
-							</div>
-							<button class="btn btn-default pull-right" id="swapButton"><i class="fa fa-unsorted"></i></button>
-							<div class="form-group">
-								<label for="destinationStation">Traveling to:</label>
-	  							<select id="destinationStation" class="form-control">
-	    							<option value="INVALID">Select a station...</option>
-									{{#each stations}}
-										<option value="{{abbr}}">{{{formatStationName name}}}</option>
-									{{/each}}
-	  							</select>
-							</div>
-							<br/>
-							<button type="submit" class="btn btn-success center-block" id="ticketsButton"><i class="fa fa-search"></i>
- Lookup Details...</button>
-						</fieldset>
-					</form>
+					<div id="ticketForm">
+						<form>
+							<fieldset>
+								<div class="form-group">
+									<label for="startingStation">Starting from:</label>
+		  							<select id="startingStation" class="form-control">
+		    							<option value="INVALID">Select a station...</option>
+										{{#each stations}}
+											<option value="{{abbr}}">{{{formatStationName name}}}</option>
+										{{/each}}
+		  							</select>
+								</div>
+								<button class="btn btn-default pull-right" id="swapButton"><i class="fa fa-unsorted"></i></button>
+								<div class="form-group">
+									<label for="destinationStation">Traveling to:</label>
+		  							<select id="destinationStation" class="form-control">
+		    							<option value="INVALID">Select a station...</option>
+										{{#each stations}}
+											<option value="{{abbr}}">{{{formatStationName name}}}</option>
+										{{/each}}
+		  							</select>
+								</div>
+								<br/>
+								<button type="submit" class="btn btn-success center-block" id="ticketsButton"><i class="fa fa-search"></i>
+	 Lookup Details...</button>
+							</fieldset>
+						</form>
+					</div>
+					<div id="ticketResults">
+					</div>
+				</div>
+			</div>
+		</script>
+		<script id="ticketResultsTemplate" type="text/x-handlebars-template">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-ticket"></i> Fare Details</h3>
+				</div>
+				<div class="panel-body">
+					<p><strong>Fare:</strong> ${{results.schedule.request.trip.details.fare}}</p>
+				</div>
+			</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-globe"></i> Emissions</h3>
+				</div>
+				<div class="panel-body">
+					{{{results.message.co2_emissions}}}
 				</div>
 			</div>
 		</script>

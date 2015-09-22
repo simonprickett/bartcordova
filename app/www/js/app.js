@@ -4,6 +4,7 @@
 
 var app = {
 	// TODO: Tickets tab
+	// TODO: /tickets API to include station names for origin, destination, trainHeadStation
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Network error handling
@@ -134,8 +135,8 @@ var app = {
 		app.status.isShakeEnabled = false;
 	},
 
-	amendLinks : function () {
-		$('#infoExternalContent').find('a').each(
+	amendLinks : function (selector) {
+		$(selector).find('a').each(
 			function() {
 				var href = $(this).attr('href');
 				var iabOptions = (device.platform === 'iOS' ? 'location=no,enableViewportScale=yes,transitionstyle=fliphorizontal' : '');
@@ -343,7 +344,7 @@ var app = {
 			case '#info':
 				$('#reloadButton').hide();
 				app.disableShakeDetection();
-				app.amendLinks();
+				app.amendLinks('#infoExternalContent');
 				break;
 
 			case '#tickets':
@@ -368,7 +369,7 @@ var app = {
 				});
 
 				$('#destinationStation').val('INVALID');
-				
+
 				break;
 		}
 	},
@@ -392,10 +393,24 @@ var app = {
 			return;
 		}
 
-		console.log('Starting at: ' + $('#startingStation').val());
-		console.log('Heading to: ' + $('#destinationStation').val());
-
-		// Load and display the trip data
+		$.ajax({
+			cache: false,
+			error: function(xhr, status, errorMsg) {
+				alert('failed to get ticket / trip information');
+				console.log(status);
+				console.log(errorMsg);
+			},
+			method: 'GET',
+			success: function(data, status) {
+				console.log(data);
+				// do something with the data!
+				$('#ticketResults').html(app.resolveTemplate('ticketResultsTemplate', { results: data}));
+				app.amendLinks('#ticketResults');
+				$('#ticketForm').hide();
+				$('#ticketResults').show();
+			},
+			url: app.API_BASE_URL + 'tickets/' + startStation + '/' + destinationStation
+		});
 	},
 
 	onSwapButtonPressed: function() {
