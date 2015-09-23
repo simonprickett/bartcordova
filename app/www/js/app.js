@@ -3,8 +3,8 @@
 'use strict';
 
 var app = {
-	// TODO: Tickets tab
-	// TODO: /tickets API to include station names for origin, destination, trainHeadStation
+	// TODO: Tickets tab unhappy path
+	// TODO: Tickets tab go back to choosing stations
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Network error handling
