@@ -178,6 +178,8 @@
 					</div>
 				</div>
 				<div id="tickets" class="tab-pane fade">
+					<div id="ticketError">
+					</div>
 					<div id="ticketForm">
 						<form>
 							<fieldset>
@@ -242,6 +244,14 @@
 				<div class="panel-body">
 					{{{results.message.co2_emissions}}}
 				</div>
+			</div>
+		</script>
+		<script id="ticketErrorTemplate" type="text/x-handlebars-template">
+			<div class="alert alert-danger alert-dismissable" role="alert">
+				<button type="button" class="close" data-dismiss="alert">
+					<span>&times;</span>
+				</button>
+				<strong><i class="fa fa-exclamation-triangle"></i>&nbsp; {{errorMessage}}
 			</div>
 		</script>
 	</head>

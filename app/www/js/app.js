@@ -3,7 +3,6 @@
 'use strict';
 
 var app = {
-	// TODO: Tickets tab unhappy path
 	// TODO: Tickets tab go back to choosing stations
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
@@ -382,19 +381,21 @@ var app = {
 		var destinationStation = $('#destinationStation').val();
 
 		if (startStation === 'INVALID') {
-			console.log('Start Station was invalid!');
+			$('#ticketError').html(app.resolveTemplate('ticketErrorTemplate', { errorMessage: 'Please choose a starting station.'}));
 			return;
 		}
 
 		if (destinationStation === 'INVALID') {
-			console.log('Destination Station was invalid!');
+			$('#ticketError').html(app.resolveTemplate('ticketErrorTemplate', { errorMessage: 'Please choose a destination station.'}));
 			return;
 		}
 
 		if (startStation === destinationStation) {
-			console.log('Start and Destination Stations cannot be the same!');
+			$('#ticketError').html(app.resolveTemplate('ticketErrorTemplate', { errorMessage: 'Starting & destination stations can\'t be the same.'}));
 			return;
 		}
+
+		$('#ticketError').hide();
 
 		$.ajax({
 			cache: false,
