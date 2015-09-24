@@ -10,6 +10,7 @@ var app = {
 	// TODO: Page transitions
 	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates?
+	// TODO: Look at a CSS linter?
 
 	API_BASE_URL: 'http://bart.crudworks.org/api/',
 
@@ -410,6 +411,12 @@ var app = {
 				$('#ticketResults').html(app.resolveTemplate('ticketResultsTemplate', { results: data}));
 				app.amendLinks('#ticketResults');
 				$('#ticketForm').hide();
+
+				$('#newTicketSearchButton:not(.bound)').addClass('bound').click(function(e) {
+					e.preventDefault();
+					app.onNewTicketSearch();
+				});
+				
 				$('#ticketResults').show();
 			},
 			url: app.API_BASE_URL + 'tickets/' + startStation + '/' + destinationStation
@@ -422,6 +429,10 @@ var app = {
 
 		$('#startingStation').val(destinationStation);
 		$('#destinationStation').val(startStation);
+	},
+
+	onNewTicketSearch: function() {
+		alert('ok');
 	},
 
 	onShake: function() {
