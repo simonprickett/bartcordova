@@ -3,12 +3,10 @@
 'use strict';
 
 var app = {
-	// TODO: Tickets tab go back to choosing stations
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Network error handling
 	// TODO: Page transitions
-	// TODO: Loading mask or spinner
 	// TODO: Precompiled Handlebars templates?
 	// TODO: Look at a CSS linter?
 
@@ -80,6 +78,14 @@ var app = {
 		document.addEventListener('resume', app.onDeviceResume, false);
 		document.addEventListener('offline', app.onOffline, false);
 		document.addEventListener('online', app.onOnline, false);
+
+		$(document).ajaxStart(function() {
+			$('#loadMask').show();
+		});
+
+		$(document).ajaxStop(function() {
+			$('#loadMask').hide();
+		});
 
 		if (device.platform === 'Android') {
 			document.addEventListener('backbutton', app.onBackButton, false);
@@ -416,7 +422,7 @@ var app = {
 					e.preventDefault();
 					app.onNewTicketSearch();
 				});
-				
+
 				$('#ticketResults').show();
 			},
 			url: app.API_BASE_URL + 'tickets/' + startStation + '/' + destinationStation
@@ -432,7 +438,8 @@ var app = {
 	},
 
 	onNewTicketSearch: function() {
-		alert('ok');
+		$('#ticketResults').hide();
+		$('#ticketForm').show();
 	},
 
 	onShake: function() {
