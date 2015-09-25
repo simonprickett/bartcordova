@@ -7,7 +7,6 @@ var app = {
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Cache station details for a while and later reload it?
 	// TODO: Network error handling
-	// TODO: Don't throw the Ajax loader for loading system status and nearest station
 	// TODO: Page transitions
 	// TODO: Refresh on return from background
 	// TODO: Precompiled Handlebars templates?
