@@ -5,8 +5,11 @@
 var app = {
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
+	// TODO: Cache station details for a while and later reload it?
 	// TODO: Network error handling
+	// TODO: Don't throw the Ajax loader for loading system status and nearest station
 	// TODO: Page transitions
+	// TODO: Refresh on return from background
 	// TODO: Precompiled Handlebars templates?
 	// TODO: Look at a CSS linter?
 
@@ -79,10 +82,6 @@ var app = {
 		document.addEventListener('offline', app.onOffline, false);
 		document.addEventListener('online', app.onOnline, false);
 
-		$(document).ajaxStart(function() {
-			$('#loadMask').show();
-		});
-
 		$(document).ajaxStop(function() {
 			$('#loadMask').hide();
 		});
@@ -124,8 +123,6 @@ var app = {
 	showStationDetailPage: function(stationId) {
 		app.status.isShowingStationList = false;
 		app.status.currentStation = stationId;
-
-		$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
 		app.loadStationDepartures(stationId);
 	},
 
@@ -177,6 +174,7 @@ var app = {
 			updateUI();
 		} else {
 			console.log('NETWORK REQUEST');
+			$('#loadMask').show();
 			$.ajax({
 				cache: false,
 				error: function(xhr, status, errorMsg) {
@@ -215,6 +213,7 @@ var app = {
 	},
 
 	loadStationAccess: function() {
+		$('#loadMask').show();
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
@@ -250,6 +249,7 @@ var app = {
 	},
 
 	loadStationDepartures: function(stationId) {
+		$('#loadMask').show();
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errMsg) {
@@ -257,6 +257,7 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
+				$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
 				$('#stationHeader').html(app.resolveTemplate('stationHeaderTemplate', { stationName: data.name }));
 				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { stations: app.status.stationList.data, destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
 
@@ -404,6 +405,7 @@ var app = {
 
 		$('#ticketError').hide();
 
+		$('#loadMask').show();
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
