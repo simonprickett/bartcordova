@@ -457,6 +457,9 @@ var app = {
 
 	onDeviceResume: function() {
 		console.log('App was brought back to the foreground.');
+		if (app.status.isShowingStationList) {
+			app.showStationListPage();
+		}
 	},
 
 	onOnline: function() {
