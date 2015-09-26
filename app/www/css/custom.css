@@ -47,6 +47,10 @@ body {
 	background-size: 100%;
 }
 
+.headerNoGap {
+	margin-top: -12px;
+}
+
 .stationTabs {
 	margin-bottom: 20px;
 }

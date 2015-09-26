@@ -37,7 +37,7 @@
   					<span class="glyphicon glyphicon-refresh"></span>
   				</button>
   			</div>
-			<h3><i class="fa fa-subway"></i> BART Departures</h3>
+			<h3 class="headerNoGap"><i class="fa fa-subway"></i> BART Departures</h3>
 		</script>
 
 		<script id="stationListTemplate" type="text/x-handlebars-template">
@@ -254,7 +254,15 @@
 				<button type="button" class="close" data-dismiss="alert">
 					<span>&times;</span>
 				</button>
-				<strong><i class="fa fa-exclamation-triangle"></i>&nbsp; {{errorMessage}}
+				<strong><i class="fa fa-exclamation-triangle"></i>&nbsp; {{errorMessage}}</strong>
+			</div>
+		</script>
+		<script id="generalErrorTemplate" type="text/x-handlebars-template">
+			<div class="alert alert-danger alert-dismissable" role="alert">
+				<button type="button" class="close" data-dismiss="alert">
+					<span>&times;</span>
+				</button>
+				<strong><i class="fa fa-exclamation-triangle"></i>&nbsp; {{errorMessage}}</strong>
 			</div>
 		</script>
 	</head>
@@ -271,6 +279,8 @@
     			</div>
 		    </div>
 		</nav>
+		<div class="container" id="generalError">
+		</div>
 		<div class="container" id="app">
 		</div>
 

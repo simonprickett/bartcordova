@@ -3,12 +3,12 @@
 'use strict';
 
 var app = {
+	// TODO: Less harsh colors on the loading mask
+	// TODO: Auto dismiss ticket form errors
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Cache station details for a while and later reload it?
-	// TODO: Network error handling
 	// TODO: Page transitions
-	// TODO: Refresh on return from background
 	// TODO: Precompiled Handlebars templates?
 	// TODO: Look at a CSS linter?
 
@@ -17,12 +17,21 @@ var app = {
 	status: {
 		stationAccess: undefined,
 		stationList: undefined,
-		isShowingStationList: true,
 		isShakeEnabled: false,
-		currentStation: undefined
+		currentStation: undefined,
+		currentState: undefined
 	},
 
 	initialize: function() {
+		this.states = Object.freeze({ 
+			STATION_LIST: 1, 
+			STATION_DEPARTURES: 2, 
+			STATION_INFO: 3, 
+			STATION_TICKETS: 4 
+		});
+
+		this.status.currentState = this.states.STATION_LIST;
+
 		this.registerTemplateHelpers();
 		document.addEventListener('deviceready', this.onDeviceReady, false);
 	},
@@ -85,6 +94,10 @@ var app = {
 			$('#loadMask').hide();
 		});
 
+		$(document).ajaxError(function() {
+			$('#loadMask').hide();
+		});
+
 		if (device.platform === 'Android') {
 			document.addEventListener('backbutton', app.onBackButton, false);
 			document.addEventListener('menubutton', app.onMenuButton, false);
@@ -106,7 +119,7 @@ var app = {
 	},
 
 	showStationListPage: function() {
-		app.status.isShowingStationList = true;
+		app.status.currentState = app.states.STATION_LIST;
 		app.status.currentStation = undefined;
 		app.enableShakeDetection();
 
@@ -120,7 +133,7 @@ var app = {
 	},
 
 	showStationDetailPage: function(stationId) {
-		app.status.isShowingStationList = false;
+		app.status.currentState = app.states.STATION_DEPARTURES;
 		app.status.currentStation = stationId;
 		app.loadStationDepartures(stationId);
 	},
@@ -177,9 +190,8 @@ var app = {
 			$.ajax({
 				cache: false,
 				error: function(xhr, status, errorMsg) {
-					alert('failed to load stations');
+					app.showGeneralError('No Internet Connection?');
 					console.log(status);
-					console.log(errorMsg);
 				},
 				method: 'GET',
 				success: function(data, status) {
@@ -216,7 +228,7 @@ var app = {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
-				alert('failed to load station info');
+				app.showGeneralError('No Internet Connection?');
 				console.log(status);
 				console.log(errorMsg);
 			},
@@ -252,7 +264,7 @@ var app = {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errMsg) {
-				alert('failed to load depatures for ' + stationId);
+				app.showGeneralError('No Internet Connection?');
 			},
 			method: 'GET',
 			success: function(data, status) {
@@ -271,6 +283,8 @@ var app = {
 				$('.stationDetailLink').click(function() {
 					app.showStationDetailPage($(this).attr('id'));
 				});
+
+				window.scrollTo(0, 0);
 			},
 			url: app.API_BASE_URL + 'departures/' + stationId
 		});
@@ -280,7 +294,7 @@ var app = {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
-				alert('failed to get system status');
+				app.showGeneralError('No Internet Connection?');
 				console.log(status);
 				console.log(errorMsg);
 			},
@@ -302,7 +316,7 @@ var app = {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
-				alert('failed to get train count');
+				app.showGeneralError('No Internet Connection?');
 				console.log(status);
 				console.log(errorMsg);
 			},
@@ -318,7 +332,7 @@ var app = {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
-				alert('failed to get closest station');
+				app.showGeneralError('No Internet Connection?');
 				console.log(status);
 				console.log(errorMsg);
 			},
@@ -335,7 +349,7 @@ var app = {
 	},
 
 	onGeolocationError: function(error) {
-		console.log(error);
+		app.showGeneralError('Enable Location Services to see closest station.');
 	},
 
 	onTabChange: function(e) {
@@ -343,17 +357,20 @@ var app = {
 
 		switch(tabName) {
 			case '#departures':
+				app.status.currentState = app.states.STATION_DEPARTURES;
 				$('#reloadButton').show();
 				app.enableShakeDetection();
 				break;
 
 			case '#info':
+				app.status.currentState = app.states.STATION_INFO;
 				$('#reloadButton').hide();
 				app.disableShakeDetection();
 				app.amendLinks('#infoExternalContent');
 				break;
 
 			case '#tickets':
+				app.status.currentState = app.states.STATION_TICKETS;
 				$('#reloadButton').hide();
 				app.disableShakeDetection();
 				$('#ticketsButton:not(.bound)').addClass('bound').click(function(e) {
@@ -408,7 +425,7 @@ var app = {
 		$.ajax({
 			cache: false,
 			error: function(xhr, status, errorMsg) {
-				alert('failed to get ticket / trip information');
+				app.showGeneralError('No Internet Connection?');
 				console.log(status);
 				console.log(errorMsg);
 			},
@@ -444,10 +461,13 @@ var app = {
 	},
 
 	onShake: function() {
-		if (app.status.isShowingStationList) {
-			app.showStationListPage();
-		} else {
-			app.showStationDetailPage(app.status.currentStation);
+		switch(app.status.currentState) {
+			case app.states.STATION_LIST:
+				app.showStationListPage();
+				break;
+			case app.states.STATION_DEPARTURES:
+				app.showStationDetailPage(app.status.currentStation);
+				break;
 		}
 	},
 
@@ -457,8 +477,13 @@ var app = {
 
 	onDeviceResume: function() {
 		console.log('App was brought back to the foreground.');
-		if (app.status.isShowingStationList) {
-			app.showStationListPage();
+		switch(app.status.currentState) {
+			case app.states.STATION_LIST:
+				app.showStationListPage();
+				break;
+			case app.states.STATION_DEPARTURES:
+				app.showStationDetailPage(app.status.currentStation);
+				break;
 		}
 	},
 
@@ -473,7 +498,7 @@ var app = {
 	onBackButton: function() {
 		console.log('User pressed back button.');
 
-		if (app.status.isShowingStationList) {
+		if (app.status.currentState === app.states.STATION_LIST) {
 			// Go to launcher
 			navigator.app.exitApp();
 		} else {
@@ -488,6 +513,18 @@ var app = {
 
 	onSearchButton: function() {
 		console.log('User pressed search button.');
+	},
+
+	showGeneralError: function(errorMessage) {
+		$('#generalError').html(app.resolveTemplate('generalErrorTemplate', { errorMessage: errorMessage })).show();
+		console.log(errorMessage);
+
+		setTimeout(function() {
+			$('#generalError').hide({
+				duration: 1000,
+				easing: 'linear'
+			});
+		}, 3000);
 	}
 };
 
