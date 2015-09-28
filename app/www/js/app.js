@@ -301,7 +301,7 @@ var app = {
 			method: 'GET',
 			success: function(data, status) {
 				if (data && data.bsa) {
-					if (data.bsa.description === 'No delays reported.') {
+					if (data.bsa[0].description === 'No delays reported.') {
 						app.loadTrainCount();
 					} else {
 						$('#systemStatus').html(app.resolveTemplate('serviceAnnouncementTemplate', { announcement: data }));
