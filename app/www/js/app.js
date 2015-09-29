@@ -177,6 +177,8 @@ var app = {
 			$('#reloadButton').click(function(e) {
 				app.showStationListPage();
 			});
+
+			window.scrollTo(0, 0);
 		};
 
 		// TODO check for expired last load date...
