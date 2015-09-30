@@ -18,12 +18,12 @@ Requires proper install and setup of:
 
 * Xcode including command line tools, recommend Xcode 7
 * Android SDK, recommend API level 22 (Android 5.1.1)
-* Apache Cordova CLI (5.2.0 or better)
+* Apache Cordova CLI (5.3.3 or better)
 * eslint
 
 Fresh clone workflow:
 
-* ```cordova -version``` (should yield 5.2.0 or better)
+* ```cordova -version``` (should yield 5.3.3 or better)
 * ```cd app```
 * ```cordova platform add ios```
 * ```cordova platform add android```

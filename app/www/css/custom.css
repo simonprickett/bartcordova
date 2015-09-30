@@ -89,10 +89,10 @@ body {
 	color: #000000;
 }
 
-#swapButton {
+.swapButton {
 	margin-bottom: 10px;
 }
 
-#newTicketSearchButton {
+.newTicketSearchButton {
 	margin-bottom: 20px;
 }
