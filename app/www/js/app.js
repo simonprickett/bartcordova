@@ -3,13 +3,14 @@
 'use strict';
 
 var app = {
+	// TODO: Remove unnecessary aria markup
 	// TODO: Less harsh colors on the loading mask
 	// TODO: Auto dismiss ticket form errors
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Cache station details for a while and later reload it?
 	// TODO: Page transitions
-	// TODO: Optimize Handlebars for known helpers
+	// TODO: Optimize Handlebars for my custom helpers?
 	// TODO: Look at a CSS linter?
 
 	API_BASE_URL: 'http://bart.crudworks.org/api/',
@@ -76,13 +77,6 @@ var app = {
 			return stationName;
 		});
 	},
-
-	// resolveTemplate: function(templateName, templateData) {
-	// 	var tplSource = $('#' + templateName).html();
-	// 	var compiledTemplate = Handlebars.compile(tplSource);
-		
-	// 	return compiledTemplate(templateData);
-	// },
 
 	onDeviceReady: function() {
 		document.addEventListener('pause', app.onDevicePause, false);
