@@ -9,7 +9,7 @@ var app = {
 	// TODO: Cache station list for a while and later reload it
 	// TODO: Cache station details for a while and later reload it?
 	// TODO: Page transitions
-	// TODO: Precompiled Handlebars templates?
+	// TODO: Optimize Handlebars for known helpers
 	// TODO: Look at a CSS linter?
 
 	API_BASE_URL: 'http://bart.crudworks.org/api/',
@@ -77,12 +77,12 @@ var app = {
 		});
 	},
 
-	resolveTemplate: function(templateName, templateData) {
-		var tplSource = $('#' + templateName).html();
-		var compiledTemplate = Handlebars.compile(tplSource);
+	// resolveTemplate: function(templateName, templateData) {
+	// 	var tplSource = $('#' + templateName).html();
+	// 	var compiledTemplate = Handlebars.compile(tplSource);
 		
-		return compiledTemplate(templateData);
-	},
+	// 	return compiledTemplate(templateData);
+	// },
 
 	onDeviceReady: function() {
 		document.addEventListener('pause', app.onDevicePause, false);
@@ -123,8 +123,8 @@ var app = {
 		app.status.currentStation = undefined;
 		app.enableShakeDetection();
 
-		$('#app').html(app.resolveTemplate('stationListPageTemplate'));
-		$('#title').html(app.resolveTemplate('stationListHeaderTemplate'));
+		$('#app').html(Handlebars.templates.stationlistpage());
+		$('#title').html(Handlebars.templates.stationlistheader());
 
 		app.loadStationList();
 		app.loadSystemStatus();
@@ -168,7 +168,7 @@ var app = {
 
 	loadStationList: function() {
 		var updateUI = function() {
-			$('#stationList').html(app.resolveTemplate('stationListTemplate', { stations: app.status.stationList.data }));
+			$('#stationList').html(Handlebars.templates.stationlist({ stations: app.status.stationList.data }));
 
 			$('#stations li').click(function(e) {
 				app.showStationDetailPage($(this).attr('id'));
@@ -270,9 +270,9 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				$('#app').html(app.resolveTemplate('stationDetailPageTemplate'));
-				$('#stationHeader').html(app.resolveTemplate('stationHeaderTemplate', { stationName: data.name }));
-				$('#stationDepartures').html(app.resolveTemplate('stationDeparturesTemplate', { stations: app.status.stationList.data, destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
+				$('#app').html(Handlebars.templates.stationdetailpage());
+				$('#stationHeader').html(Handlebars.templates.stationheader({ stationName: data.name }));
+				$('#stationDepartures').html(Handlebars.templates.stationdepartures({ stations: app.status.stationList.data, destinations: data.etd, station: app.getStation(stationId), stationAccess: app.getStationAccess(stationId), isiOS : (device.platform === 'iOS') }));
 
 				$('#backButton').click(function() {
 					app.showStationListPage();
@@ -306,7 +306,7 @@ var app = {
 					if (data.bsa[0].description === 'No delays reported.') {
 						app.loadTrainCount();
 					} else {
-						$('#systemStatus').html(app.resolveTemplate('serviceAnnouncementTemplate', { announcement: data }));
+						$('#systemStatus').html(Handlebars.templates.serviceannouncement({ announcement: data }));
 					}
 				}
 			},
@@ -324,7 +324,7 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				$('#systemStatus').html(app.resolveTemplate('trainCountTemplate', { systemStatus: data }));
+				$('#systemStatus').html(Handlebars.templates.traincount({ systemStatus: data }));
 			},
 			url: app.API_BASE_URL + 'status'
 		});
@@ -340,7 +340,7 @@ var app = {
 			},
 			method: 'GET',
 			success: function(data, status) {
-				$('#closestStation').html(app.resolveTemplate('closestStationTemplate', { station: data}));
+				$('#closestStation').html(Handlebars.templates.closeststation({ station: data}));
 
 				$('#nearestStationButton').click(function() {
 					app.showStationDetailPage(data.abbr);
@@ -407,17 +407,17 @@ var app = {
 		var destinationStation = $('#destinationStation').val();
 
 		if (startStation === 'INVALID') {
-			$('#ticketError').html(app.resolveTemplate('ticketErrorTemplate', { errorMessage: 'Please choose a starting station.'}));
+			$('#ticketError').html(Handlebars.templates.ticketerror({ errorMessage: 'Please choose a starting station.'}));
 			return;
 		}
 
 		if (destinationStation === 'INVALID') {
-			$('#ticketError').html(app.resolveTemplate('ticketErrorTemplate', { errorMessage: 'Please choose a destination station.'}));
+			$('#ticketError').html(Handlebars.templates.ticketerror({ errorMessage: 'Please choose a destination station.'}));
 			return;
 		}
 
 		if (startStation === destinationStation) {
-			$('#ticketError').html(app.resolveTemplate('ticketErrorTemplate', { errorMessage: 'Starting & destination stations can\'t be the same.'}));
+			$('#ticketError').html(Handlebars.templates.ticketerror({ errorMessage: 'Starting & destination stations can\'t be the same.'}));
 			return;
 		}
 
@@ -434,7 +434,7 @@ var app = {
 			method: 'GET',
 			success: function(data, status) {
 				// do something with the data!
-				$('#ticketResults').html(app.resolveTemplate('ticketResultsTemplate', { results: data}));
+				$('#ticketResults').html(Handlebars.templates.ticketresults({ results: data}));
 				app.amendLinks('#ticketResults');
 				$('#ticketForm').hide();
 
@@ -518,7 +518,7 @@ var app = {
 	},
 
 	showGeneralError: function(errorMessage) {
-		$('#generalError').html(app.resolveTemplate('generalErrorTemplate', { errorMessage: errorMessage })).show();
+		$('#generalError').html(Handlebars.templates.generalerror({ errorMessage: errorMessage })).show();
 		console.log(errorMessage);
 
 		setTimeout(function() {

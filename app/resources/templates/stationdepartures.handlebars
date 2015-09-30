@@ -1,0 +1,115 @@
+<div class="tab-content">
+	<div id="departures" class="tab-pane fade in active">
+		{{#each destinations}}
+			<div class="panel panel-info">
+				<div class="panel-heading stationDetailLink" id="{{abbreviation}}">
+					<h3 class="panel-title">{{{formatStationName destination}}} <span class="platform">(Platform {{estimate.[0].platform}})</span></h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						{{#each estimate}}
+							<li class="list-group-item line{{color}}">{{{formatTrainIcon minutes}}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{formatMins minutes}}, {{length}} cars</li>
+						{{/each}}
+					</ul>
+				</div>
+			</div>
+		{{else}}
+			<div class="panel panel-danger">
+			  	<div class="panel-heading">
+					<h3 class="panel-title">No Departures</h3>
+					</div>
+					<div class="panel-body">
+					<i class="fa fa-exclamation-triangle"></i> 
+					Real time departures are not available for this station right now.
+					</div>
+			</div>
+		{{/each}}
+	</div>
+	<div id="info" class="tab-pane fade">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-map"></i> Location {{#if isiOS}}<a href="maps:ll={{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">{{else}}<a href="geo:{{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">{{/if}}<i class="fa fa-external-link pull-right"></i></a></h3> 
+			</div>
+			<div class="panel-body">
+				{{#if isiOS}}
+					<a href="maps:ll={{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">
+				{{else}}
+					<a href="geo:{{station.gtfs_latitude}},{{station.gtfs_longitude}}&z=18">
+				{{/if}}
+				<img class="img-responsive" src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCjoixPZLk1UWPeKb9woea0etMiY2ZdKkQ&zoom=18&size=450x450&maptype=roadmap&markers=color:red%7C{{station.gtfs_latitude}},{{station.gtfs_longitude}}" alt="Station Location Map"/>
+				</a>
+				{{station.address}}
+				<br/>
+				{{station.city}} {{station.state}}, {{station.zipcode}}
+			</div>
+		</div>
+		<div id="infoExternalContent">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-bicycle"></i> For Cyclists</h3>
+				</div>
+				<div class="panel-body">
+					<h4>Bike Lockers</h4>
+					{{{stationAccess.lockers}}}
+					{{#if stationAccess.bike_station_text}}
+						<h4>Bike Station</h4>
+						{{{stationAccess.bike_station_text}}}
+					{{/if}}
+				</div>
+			</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-car"></i> Parking</h3>
+				</div>
+				<div class="panel-body">
+					{{#if stationAccess.fill_time}}
+						<strong>Expect parking to be full by {{stationAccess.fill_time}}.</strong>
+						<hr/>
+					{{/if}}
+					{{{stationAccess.parking}}}
+				</div>
+			</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-wheelchair"> Accessibility</i></h3>
+				</div>
+				<div class="panel-body">
+					{{{stationAccess.entering}}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="tickets" class="tab-pane fade">
+		<div id="ticketError">
+		</div>
+		<div id="ticketForm">
+			<form>
+				<fieldset>
+					<div class="form-group">
+						<label for="startingStation">Starting from:</label>
+							<select id="startingStation" class="form-control">
+							<option value="INVALID">Select a station...</option>
+							{{#each stations}}
+								<option value="{{abbr}}">{{{formatStationName name}}}</option>
+							{{/each}}
+							</select>
+					</div>
+					<button class="btn btn-default pull-right" id="swapButton"><i class="fa fa-unsorted"></i></button>
+					<div class="form-group">
+						<label for="destinationStation">Traveling to:</label>
+							<select id="destinationStation" class="form-control">
+							<option value="INVALID">Select a station...</option>
+							{{#each stations}}
+								<option value="{{abbr}}">{{{formatStationName name}}}</option>
+							{{/each}}
+							</select>
+					</div>
+					<br/>
+					<button type="submit" class="btn btn-success center-block" id="ticketsButton"><i class="fa fa-search"></i>Lookup Details...</button>
+				</fieldset>
+			</form>
+		</div>
+		<div id="ticketResults">
+		</div>
+	</div>
+</div>

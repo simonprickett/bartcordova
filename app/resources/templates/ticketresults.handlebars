@@ -1,0 +1,34 @@
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-ticket"></i> Fare Details</h3>
+	</div>
+	<div class="panel-body">
+		<ul>
+			<li><strong>${{results.schedule.request.trip.details.fare}}</strong> (Adult)</li>
+			<li>${{results.schedule.request.trip.details.clipper}} (Youth, Senior, RTC Clipper)</li>
+		</ul>
+		<p><i class="fa fa-info-circle"></i> Fare estimate is based on a trip starting now.</p>
+	</div>
+</div>
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-subway"></i> Route Details</h3>
+	</div>
+	<div class="panel-body">
+		<p><i class="fa fa-clock-o"></i> Estimated trip time is {{results.schedule.request.trip.details.duration}} minutes.</p>
+		{{#each results.schedule.request.trip.leg}}
+			<p>At <strong>{{details.originName}}</strong> board a {{details.trainHeadStationName}} train alighting at <strong>{{details.destinationName}}.</strong></p>
+		{{/each}}
+	</div>
+</div>			
+<div class="panel panel-info">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-globe"></i> Emissions</h3>
+	</div>
+	<div class="panel-body">
+		{{{results.message.co2_emissions}}}
+	</div>
+</div>
+<button type="button" class="btn btn-success center-block" id="newTicketSearchButton">
+	<i class="fa fa-search"></i> New Search
+</button>
