@@ -16,7 +16,7 @@ This uses:
 
 Requires proper install and setup of:
 
-* Xcode including command line tools, recommend Xcode 7
+* Xcode including command line tools, recommend Xcode 7.01
 * Android SDK, recommend API level 22 (Android 5.1.1)
 * Apache Cordova CLI (5.3.3 or better)
 * eslint
