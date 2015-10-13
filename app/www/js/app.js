@@ -4,7 +4,6 @@
 
 var app = {
 	// TODO: Set native version number in build process
-	// TODO: Less harsh colors on the loading mask
 	// TODO: Auto dismiss ticket form errors
 	// TODO: Home page tabs - departures, tickets, anything else (Elevators?)
 	// TODO: Cache station list for a while and later reload it
