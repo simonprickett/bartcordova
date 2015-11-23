@@ -83,6 +83,8 @@ var app = {
 		document.addEventListener('offline', app.onOffline, false);
 		document.addEventListener('online', app.onOnline, false);
 
+		new FastClick(document.body);
+
 		$(document).ajaxStop(function() {
 			$('#loadMask').hide();
 		});
